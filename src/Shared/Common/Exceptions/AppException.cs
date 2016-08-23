@@ -9,6 +9,11 @@ namespace Microsoft.Catalog.Common.Exceptions
         public string UserId { get; set; }
         public int ExceptionCode { get; set; }
         public AppException(string message, Exception exception): base(message, exception) { }
+        public AppException(string message, int exceptionCode): base(message)
+        {
+            ExceptionCode = exceptionCode;
+            CorrelationId = Guid.NewGuid().ToString();
+        }
         public AppException(string correlationId, string userId, int exceptionCode)
         {
             CorrelationId = correlationId;

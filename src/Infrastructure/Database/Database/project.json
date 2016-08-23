@@ -30,7 +30,8 @@
           "type": "platform",
           "version": "1.0.0-*"
         }
-      }
+      },
+      "imports": [ "dnxcore50", "net45", "net40" ]
     }
   }
 }

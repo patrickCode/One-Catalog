@@ -1,7 +1,7 @@
 ﻿{
   "version": "1.0.0-*",
   "testRunner": "mstest",
-
+    
   "dependencies": {
     "Database": "1.0.0-0",
     "dotnet-test-mstest": "1.0.1-preview",
@@ -13,7 +13,7 @@
 
   "frameworks": {
     "netstandard1.6": {
-      "imports": [ "dnxcore50", "netcoreapp1.0", "portable-net45+win8" ]
+      "imports": [ "dnxcore50", "netcoreapp1.0", "portable-net45+win8", "net45" ]
     }
   },
   "runtimes": {

@@ -57,6 +57,7 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Project.sql" />
@@ -70,5 +71,8 @@
   <ItemGroup>
     <None Include="Microsoft.Catalog.Sql.publish.xml" />
     <None Include="Microsoft.Catalog.Sql.Dev.publish.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\EnableChangeTracking.sql" />
   </ItemGroup>
 </Project>
