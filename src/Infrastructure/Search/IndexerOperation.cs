@@ -1,13 +1,13 @@
-﻿using Microsoft.Catalog.Azure.Search.Interfaces;
-using System;
-using System.Threading.Tasks;
-using Microsoft.Azure.Search.Models;
-using Microsoft.Catalog.Common.Converters;
-using Microsoft.Azure.Search;
-using Microsoft.Catalog.Common.Configuration;
-using Microsoft.Catalog.Common.Exceptions;
-using Microsoft.Catalog.Common;
+﻿using System;
 using System.Net.Http;
+using Microsoft.Azure.Search;
+using System.Threading.Tasks;
+using Microsoft.Catalog.Common;
+using Microsoft.Azure.Search.Models;
+using Microsoft.Catalog.Common.Exceptions;
+using Microsoft.Catalog.Common.Converters;
+using Microsoft.Catalog.Common.Configuration;
+using Microsoft.Catalog.Azure.Search.Interfaces;
 
 namespace Microsoft.Catalog.Azure.Search
 {

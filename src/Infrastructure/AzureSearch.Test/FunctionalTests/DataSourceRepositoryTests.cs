@@ -1,12 +1,11 @@
-﻿using Microsoft.Azure.Search.Models;
-using Microsoft.Catalog.Azure.Search.Interface;
-using Microsoft.Catalog.Common.Configuration;
-using Microsoft.Catalog.Common.Converters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.Azure.Search.Models;
+using Microsoft.Catalog.Common.Converters;
+using Microsoft.Catalog.Common.Configuration;
+using Microsoft.Catalog.Azure.Search.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
 {

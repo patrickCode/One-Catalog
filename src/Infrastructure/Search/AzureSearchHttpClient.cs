@@ -2,12 +2,12 @@
 using System.Text;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 using Microsoft.Catalog.Common;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Catalog.Common.Exceptions;
 using Microsoft.Catalog.Common.Configuration;
-using System.Threading.Tasks;
 
 namespace Microsoft.Catalog.Azure.Search
 {

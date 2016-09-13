@@ -27,7 +27,11 @@
             public const string GetIndexerStatusApi = "https://{0}.search.windows.net/indexers/[indexer name]/status?api-version={1}";
             public const string ResetIndexerApi = "https://{0}.search.windows.net/indexers/[indexer name]/reset?api-version={1}";
             public const string RunIndexerApi = "https://{0}.search.windows.net/indexers/[indexer name]/run?api-version={1}";
+            
+            public const string CreateDocumentApi = "https://{0}.search.windows.net/indexes/[index name]/docs/index?api-version={1}";
 
+            public const string SearchApi = "https://{0}.search.windows.net/indexes/[index name]/docs/search?api-version={1}";
+            
             public const string AzureSearchApiKey = "api-key";
         }
     }

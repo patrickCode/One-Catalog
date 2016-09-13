@@ -9,7 +9,7 @@ using Microsoft.Azure.Search.Models;
 using Microsoft.Catalog.Common.Converters;
 using Microsoft.Catalog.Common.Exceptions;
 using Microsoft.Catalog.Common.Configuration;
-using Microsoft.Catalog.Azure.Search.Interface;
+using Microsoft.Catalog.Azure.Search.Interfaces;
 
 namespace Microsoft.Catalog.Azure.Search
 {

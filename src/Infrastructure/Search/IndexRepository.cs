@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.Catalog.Common;
 using System.Collections.Generic;
 using Microsoft.Azure.Search.Models;
-using Microsoft.Catalog.Common.Converters;
 using Microsoft.Catalog.Common.Exceptions;
+using Microsoft.Catalog.Common.Converters;
 using Microsoft.Catalog.Common.Configuration;
 using Microsoft.Catalog.Azure.Search.Interfaces;
 

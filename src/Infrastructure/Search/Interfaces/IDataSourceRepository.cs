@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Azure.Search.Models;
 
-namespace Microsoft.Catalog.Azure.Search.Interface
+namespace Microsoft.Catalog.Azure.Search.Interfaces
 {
     public interface IDataSourceRepository
     {

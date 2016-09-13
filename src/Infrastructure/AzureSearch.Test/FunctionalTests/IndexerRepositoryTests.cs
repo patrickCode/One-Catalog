@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Azure.Search.Models;
 using Microsoft.Catalog.Common.Converters;
 using Microsoft.Catalog.Common.Configuration;
 using Microsoft.Catalog.Azure.Search.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Catalog.Azure.Search.Interface;
 
 namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
 {

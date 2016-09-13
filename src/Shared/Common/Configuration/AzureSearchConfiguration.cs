@@ -149,6 +149,26 @@ namespace Microsoft.Catalog.Common.Configuration
             }
         }
         #endregion
+
+        #region Document
+        public string CreateDocumentApi
+        {
+            get
+            {
+                return string.Format(Constants.Search.CreateDocumentApi , ServiceName, Version);
+            }
+        }
+        #endregion
+
+        #region Search
+        public string SearchApi
+        {
+            get
+            {
+                return string.Format(Constants.Search.SearchApi, ServiceName, Version);
+            }
+        }
+        #endregion
         #endregion
 
     }
