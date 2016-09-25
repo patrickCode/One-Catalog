@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +11,10 @@ using Microsoft.Catalog.Azure.Search.Models;
 using Microsoft.Catalog.Azure.Search.Interfaces;
 using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
 using Microsoft.Catalog.Domain.ProjectContext.ApplicationServices;
+using Microsoft.Catalog.Database.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Catalog.Common.Interfaces.Repository;
+using Microsoft.Catalog.Database.Repositories.Read;
 
 namespace Web
 {
@@ -45,6 +46,11 @@ namespace Web
 
             services.AddMvc();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin());
+            });
+
             const string AzureSearchServiceName = "srch-onecatalog";
             const string AzureSearchSecretKey = "3304CCABCBCDBDE38790BBB4049A2300";
             var config = new AzureSearchConfiguration()
@@ -57,10 +63,19 @@ namespace Web
                 RetryInterval = TimeSpan.FromSeconds(1)
             };
 
+            services.AddDbContext<OneCatalogDbContext>(options => 
+                options.UseSqlServer(@"Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=dbmsonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312"));
+
+
             services.AddSingleton(config);
             services.AddSingleton<IConverter<SearchResponse>, JsonConverter<SearchResponse>>();
             services.AddScoped<IAzureSearchContext, AzureSearchContext>();
             services.AddScoped<IProjectSearchService, ProjectSearchService>();
+
+            services.AddScoped<IReadOnlyRepository<Project>, ProjectReadOnlyRepository>();
+            services.AddScoped<IReadOnlyRepository<ProjectTechnologies>, ProjectTechnologiesReadOnlyRepository>();
+            services.AddScoped<IReadOnlyRepository<Technology>, TechnologyReadOnlyRepository>();
+            services.AddScoped<IProjectQueryService, ProjectQueryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,6 +100,7 @@ namespace Web
 
             app.UseStaticFiles();
 
+            app.UseCors("AllowAll");
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

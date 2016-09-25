@@ -10,16 +10,18 @@ namespace Microsoft.Catalog.Web.Api
     [Route("api/projects")]
     public class ProjectsController: Controller
     {
-        private readonly IProjectSearchService _projectSearchService;
-        public ProjectsController(IProjectSearchService projectSearchService)
+        private readonly IProjectSearchService _searchService;
+        private readonly IProjectQueryService _queryService;
+        public ProjectsController(IProjectSearchService projectSearchService, IProjectQueryService projectQueryService)
         {
-            _projectSearchService = projectSearchService;
+            _searchService = projectSearchService;
+            _queryService = projectQueryService;
         }
         [HttpGet]
         [Route("{id}")]
         public Project Get([FromRoute] int id)
         {
-            return new Project();
+            return _queryService.Get(id);
         }   
 
         [HttpPost]
@@ -54,7 +56,7 @@ namespace Microsoft.Catalog.Web.Api
         {
             var techFilters = technologies.Select(tech => new Technology() { Name = tech }).ToList();
             var contactFilters = contacts.Select(contact => new User() { Alias = contact });
-            return _projectSearchService.Search(q, techFilters, skip, top);
+            return _searchService.Search(q, techFilters, skip, top);
         }
 
         [HttpGet]
@@ -63,7 +65,5 @@ namespace Microsoft.Catalog.Web.Api
         {
             return new List<Project>();
         } 
-
-        
     }
 }

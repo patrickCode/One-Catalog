@@ -57,7 +57,7 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
             {
                 yield return new Project()
                 {
-                    Id = Get<int>(result, "Id"),
+                    Id = int.Parse(Get<string>(result, "Id")),
                     Name = Get<string>(result, "Name"),
                     Abstract = Get<string>(result, "Abstract"),
                     Description = Get<string>(result, "Description"),
