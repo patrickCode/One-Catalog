@@ -15,6 +15,8 @@ using Microsoft.Catalog.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Catalog.Common.Interfaces.Repository;
 using Microsoft.Catalog.Database.Repositories.Read;
+using Microsoft.Catalog.Database.Repositories;
+using Microsoft.Catalog.Database.Repositories.Write;
 
 namespace Web
 {
@@ -76,6 +78,10 @@ namespace Web
             services.AddScoped<IReadOnlyRepository<ProjectTechnologies>, ProjectTechnologiesReadOnlyRepository>();
             services.AddScoped<IReadOnlyRepository<Technology>, TechnologyReadOnlyRepository>();
             services.AddScoped<IProjectQueryService, ProjectQueryService>();
+
+            services.AddScoped<IRepository<Project>, ProjectRepository>();
+            services.AddScoped<IRepository<ProjectTechnologies>, ProjectTechnologiesRepository>();
+            services.AddScoped<IProjectService, ProjectService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

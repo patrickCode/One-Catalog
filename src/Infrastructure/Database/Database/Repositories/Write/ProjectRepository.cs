@@ -1,6 +1,6 @@
 ﻿using Microsoft.Catalog.Database.Models;
 
-namespace Microsoft.Catalog.Database.Repositories
+namespace Microsoft.Catalog.Database.Repositories.Write
 {
     public class ProjectRepository: BaseRepository<Project>
     {

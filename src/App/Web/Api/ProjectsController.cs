@@ -12,10 +12,12 @@ namespace Microsoft.Catalog.Web.Api
     {
         private readonly IProjectSearchService _searchService;
         private readonly IProjectQueryService _queryService;
-        public ProjectsController(IProjectSearchService projectSearchService, IProjectQueryService projectQueryService)
+        private readonly IProjectService _projectService;
+        public ProjectsController(IProjectSearchService projectSearchService, IProjectQueryService projectQueryService, IProjectService projectService)
         {
             _searchService = projectSearchService;
             _queryService = projectQueryService;
+            _projectService = projectService;
         }
         [HttpGet]
         [Route("{id}")]
@@ -27,7 +29,7 @@ namespace Microsoft.Catalog.Web.Api
         [HttpPost]
         public int Create([FromBody] Project project)
         {
-            return -1;
+            return _projectService.AddProject(project);
         }
 
         [HttpPut]

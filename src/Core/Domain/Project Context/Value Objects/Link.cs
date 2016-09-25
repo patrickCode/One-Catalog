@@ -7,6 +7,7 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ValueObjects
         public string LinkType { get; set; }
         public Uri Href { get; set; }
         public string Desciption { get; set; }
+        public Link() { }
         public Link(string linkType, Uri href)
         {
             LinkType = linkType;

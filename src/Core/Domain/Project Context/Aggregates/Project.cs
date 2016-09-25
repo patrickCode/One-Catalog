@@ -21,5 +21,6 @@ namespace Microsoft.Catalog.Domain.ProjectContext.Aggregates
         public DateTime LastModifiedOn { get; set; }
         public User LastModifiedBy { get; set; }
         public bool IsDeleted { get; set; }
+        public Project() { }
     }
 }
