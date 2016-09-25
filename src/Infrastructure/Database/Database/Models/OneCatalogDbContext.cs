@@ -1,16 +1,14 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Database.Models
+namespace Microsoft.Catalog.Database.Models
 {
-    public partial class db_msonecatalogdevContext : DbContext
+    public partial class OneCatalogDbContext : DbContext
     {
-        public db_msonecatalogdevContext(DbContextOptions<db_msonecatalogdevContext> optionsBuilder) : base(optionsBuilder) { }
+        public OneCatalogDbContext(DbContextOptions<OneCatalogDbContext> optionsBuilder) : base(optionsBuilder) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=db-msonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312");
+            optionsBuilder.UseSqlServer(@"Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=dbmsonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

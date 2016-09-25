@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Database.Models
+namespace Microsoft.Catalog.Database.Models
 {
     public partial class Link
     {

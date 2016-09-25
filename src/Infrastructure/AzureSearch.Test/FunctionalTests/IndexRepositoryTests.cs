@@ -18,7 +18,7 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
         {
             //Arrange
             const string AzureSearchServiceName = "srch-onecatalog";
-            const string AzureSearchSecretKey = "5FC27BDF967051C61830D831988B5211";
+            const string AzureSearchSecretKey = "3304CCABCBCDBDE38790BBB4049A2300";
             var config = new AzureSearchConfiguration()
             {
                 ServiceName = AzureSearchServiceName,

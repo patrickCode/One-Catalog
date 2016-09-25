@@ -7,6 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Catalog.Common.Configuration;
+using Microsoft.Catalog.Azure.Search;
+using Microsoft.Catalog.Common.Converters;
+using Microsoft.Catalog.Azure.Search.Models;
+using Microsoft.Catalog.Azure.Search.Interfaces;
+using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
+using Microsoft.Catalog.Domain.ProjectContext.ApplicationServices;
 
 namespace Web
 {
@@ -37,6 +44,23 @@ namespace Web
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc();
+
+            const string AzureSearchServiceName = "srch-onecatalog";
+            const string AzureSearchSecretKey = "3304CCABCBCDBDE38790BBB4049A2300";
+            var config = new AzureSearchConfiguration()
+            {
+                ServiceName = AzureSearchServiceName,
+                ServiceSecretKey = AzureSearchSecretKey,
+                Version = "2015-02-28-Preview",
+                IsExponentialRetry = true,
+                MaxRetryCount = 3,
+                RetryInterval = TimeSpan.FromSeconds(1)
+            };
+
+            services.AddSingleton(config);
+            services.AddSingleton<IConverter<SearchResponse>, JsonConverter<SearchResponse>>();
+            services.AddScoped<IAzureSearchContext, AzureSearchContext>();
+            services.AddScoped<IProjectSearchService, ProjectSearchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

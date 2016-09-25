@@ -1,10 +1,10 @@
 ﻿using System;
-using Database.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Catalog.Database.Repositories.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Catalog.Database.Repositories.Write;
 using Microsoft.Catalog.Common.Interfaces.Repository;
+using Microsoft.Catalog.Database.Models;
 
 namespace Microsoft.Catalog.Database.Test.Functional_Tests
 {
@@ -19,9 +19,9 @@ namespace Microsoft.Catalog.Database.Test.Functional_Tests
             //Arrange
             #warning Use only Dev database connection string
             const string ConnectionString = "Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=db-msonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312";
-            var dbOptionsBuilder = new DbContextOptionsBuilder<db_msonecatalogdevContext>().UseSqlServer(ConnectionString);
+            var dbOptionsBuilder = new DbContextOptionsBuilder<OneCatalogDbContext>().UseSqlServer(ConnectionString);
             var dbOptions = dbOptionsBuilder.Options;
-            var dbContext = new db_msonecatalogdevContext(dbOptions);
+            var dbContext = new OneCatalogDbContext(dbOptions);
             _technologyRepository = new TechnologyRepository(dbContext);
             _technologyReadOnlyRepository = new TechnologyReadOnlyRepository(dbContext);
         }

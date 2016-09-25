@@ -1,12 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.Catalog.Domain.ProjectContext.Aggregates;
+using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
+using System.Linq;
+using Microsoft.Catalog.Domain.ProjectContext.ValueObjects;
 
 namespace Microsoft.Catalog.Web.Api
 {
     [Route("api/projects")]
     public class ProjectsController: Controller
     {
+        private readonly IProjectSearchService _projectSearchService;
+        public ProjectsController(IProjectSearchService projectSearchService)
+        {
+            _projectSearchService = projectSearchService;
+        }
         [HttpGet]
         [Route("{id}")]
         public Project Get([FromRoute] int id)
@@ -41,9 +49,12 @@ namespace Microsoft.Catalog.Web.Api
         }
 
         [HttpGet]
-        public IEnumerable<Project> Search([FromQuery]string q, [FromQuery]string technologies, [FromQuery]string contacts)
+        [Route("search")]
+        public ProjectSearchResult Search([FromQuery]string q, [FromQuery]string[] technologies, [FromQuery]string[] contacts, [FromQuery]int skip=0, [FromQuery]int top=10)
         {
-            return new List<Project>();
+            var techFilters = technologies.Select(tech => new Technology() { Name = tech }).ToList();
+            var contactFilters = contacts.Select(contact => new User() { Alias = contact });
+            return _projectSearchService.Search(q, techFilters, skip, top);
         }
 
         [HttpGet]
@@ -52,5 +63,7 @@ namespace Microsoft.Catalog.Web.Api
         {
             return new List<Project>();
         } 
+
+        
     }
 }

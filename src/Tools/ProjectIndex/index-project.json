@@ -1,0 +1,79 @@
+﻿{
+  "name": "index-project",
+  "corsOptions": null,
+  "fields": [
+    {
+      "name": "Id",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": false,
+      "sortable": false,
+      "facetable": false,
+      "key": true,
+      "retrievable": true,
+      "analyzer": null
+    },
+    {
+      "name": "Name",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "sortable": true,
+      "facetable": false,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
+    },
+    {
+      "name": "Abstract",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "sortable": true,
+      "facetable": false,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
+    },
+    {
+      "name": "Description",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "sortable": true,
+      "facetable": false,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
+    },
+    {
+      "name": "Technologies",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "sortable": false,
+      "facetable": true,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
+    },
+    {
+      "name": "Contacts",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": true,
+      "sortable": false,
+      "facetable": true,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
+    }
+  ],
+  "suggesters": [
+    {
+      "name": "project_suggester",
+      "searchMode": "analyzingInfixMatching",
+      "sourceFields": [ "Name", "Abstract" ]
+    }
+  ]
+}

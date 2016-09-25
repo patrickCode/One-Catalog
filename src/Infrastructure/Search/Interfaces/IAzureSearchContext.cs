@@ -1,9 +1,9 @@
-﻿using Microsoft.Catalog.Common.Models.Search;
+﻿using Microsoft.Catalog.Azure.Search.Models;
 
 namespace Microsoft.Catalog.Azure.Search.Interfaces
 {
     public interface IAzureSearchContext
     {
-        object Search(SearchParameters searchParameters);
+        SearchResponse Search(string index, Common.Models.Search.SearchParameters searchParameters);
     }
 }

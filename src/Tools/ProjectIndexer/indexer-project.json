@@ -1,0 +1,29 @@
+﻿{
+  "name": "indexer-project",
+  "description": "Scheduled Indexer for Project",
+  "dataSourceName": "datasource-project-sql",
+  "targetIndexName": "index-project",
+  "schedule": {
+    "interval": "PT1H",
+    "startTime": "2016-02-01T00:00:00Z"
+  },
+  "parameters": {
+    "maxFailedItems": 10,
+    "maxFailedItemsPerBatch": 5,
+    "base64EncodeKeys": false
+  },
+  "fieldMappings": [
+    {
+      "sourceFieldName": "Technologies",
+      "mappingFunction": {
+        "name": "jsonArrayToStringCollection"
+      }
+    },
+    {
+      "sourceFieldName": "Contacts",
+      "mappingFunction": {
+        "name": "jsonArrayToStringCollection"
+      }
+    }
+  ]
+}

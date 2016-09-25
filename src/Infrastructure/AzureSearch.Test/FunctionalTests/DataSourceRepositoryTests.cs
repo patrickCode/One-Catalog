@@ -18,12 +18,12 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
         {
             //Arrange
             const string AzureSearchServiceName = "srch-onecatalog";
-            const string AzureSearchSecretKey = "5FC27BDF967051C61830D831988B5211";
+            const string AzureSearchSecretKey = "3304CCABCBCDBDE38790BBB4049A2300";
             var config = new AzureSearchConfiguration()
             {
                 ServiceName = AzureSearchServiceName,
                 ServiceSecretKey = AzureSearchSecretKey,
-                Version = "2015-02-28",
+                Version = "2015-02-28-Preview",
                 IsExponentialRetry = true,
                 MaxRetryCount = 3,
                 RetryInterval = TimeSpan.FromSeconds(1)
@@ -116,7 +116,7 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
                         'name' : 'testdatasource',  
                         'description' : 'Test Description',
                         'type' : 'azuresql',
-                        'credentials' : { 'connectionString' : 'Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=db-msonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312' },  
+                        'credentials' : { 'connectionString' : 'Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=dbmsonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312' },  
                         'container' : { 'name' : 'Project' },  
                         'dataChangeDetectionPolicy' : { '@odata.type' : '#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy' }
                     }";

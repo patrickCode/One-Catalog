@@ -18,7 +18,18 @@ namespace Microsoft.Catalog.Azure.Search.Test.UnitTests
             var defSearchParameters = new SearchParameters()
             {
                 SearchText = "search",
-                FilterExpression = "field_1 eq val",
+                AppliedFacets = new AppliedFacets()
+                {
+                    Filters = new List<AppliedFilters>()
+                    {
+                        new AppliedFilters()
+                        {
+                             FacetName = "field_1",
+                             Values = new List<string>() { "val" },
+                             IsMultiple = false
+                        }
+                    }
+                },
                 Facets = new List<string>() { "field_1", "field_1" },
                 SearchMetadata = new Metadata()
                 {

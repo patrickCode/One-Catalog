@@ -1,13 +1,12 @@
 ﻿using Microsoft.Azure.Search;
+using Microsoft.Azure.Search.Models;
 using Microsoft.Catalog.Azure.Search.Interfaces;
 using Microsoft.Catalog.Azure.Search.Models;
 using Microsoft.Catalog.Common;
 using Microsoft.Catalog.Common.Configuration;
+using Microsoft.Catalog.Common.Converters;
 using Microsoft.Catalog.Common.Exceptions;
-using Microsoft.Catalog.Common.Models.Search;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -16,13 +15,14 @@ namespace Microsoft.Catalog.Azure.Search
     public class AzureSearchContext: IAzureSearchContext
     {
         private SearchServiceClient _client;
+        private IConverter<SearchResponse> _resposneConverter;
         private AzureSearchConfiguration _configuration;
         private AzureSearchHttpClient _httpClient;
         private readonly string _index;
-        public AzureSearchContext(AzureSearchConfiguration configuration, string index)
+        public AzureSearchContext(AzureSearchConfiguration configuration, IConverter<SearchResponse> converter)
         {
             _configuration = configuration;
-            _index = index;
+            _resposneConverter = converter;
             _httpClient = new AzureSearchHttpClient(_configuration);
         }
 
@@ -51,12 +51,12 @@ namespace Microsoft.Catalog.Azure.Search
             }
         }
 
-        public object Search(SearchParameters searchParameters)
-        {
+        public SearchResponse Search(string index, Common.Models.Search.SearchParameters searchParameters)
+        {   
             var searchBody = SearchBody.FromParameters(searchParameters);
-            var endpoint = _configuration.SearchApi.Replace(Constants.Search.IndexName, _index);
+            var endpoint = _configuration.SearchApi.Replace(Constants.Search.IndexName, index);
             var searchResult = _httpClient.SendRequest(endpoint, HttpMethod.Post, searchBody.ToJson());
-            return searchResult;
+            return _resposneConverter.Deserialize(searchResult);
         }
     }
 }

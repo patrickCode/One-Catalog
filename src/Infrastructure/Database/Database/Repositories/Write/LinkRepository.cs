@@ -1,9 +1,9 @@
-﻿using Database.Models;
+﻿using Microsoft.Catalog.Database.Models;
 
 namespace Microsoft.Catalog.Database.Repositories.Write
 {
     public class LinkRepository: BaseRepository<Link>
     {
-        public LinkRepository(db_msonecatalogdevContext dbContext): base(dbContext) { }
+        public LinkRepository(OneCatalogDbContext dbContext): base(dbContext) { }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using Database.Models;
+using Microsoft.Catalog.Database.Models;
 
 namespace Microsoft.Catalog.Database.Repositories
 {
     public class ProjectReadOnlyRepository : BaseReadOnlyRepository<Project>
     {
-        public ProjectReadOnlyRepository(db_msonecatalogdevContext dbContext): base(dbContext) { }
+        public ProjectReadOnlyRepository(OneCatalogDbContext dbContext): base(dbContext) { }
 
         public override Project Get(object id)
         {

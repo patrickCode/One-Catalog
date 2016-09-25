@@ -38,6 +38,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Catalog.Database.
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Catalog.Azure.Search.Test", "src\Infrastructure\AzureSearch.Test\Microsoft.Catalog.Azure.Search.Test.xproj", "{42A1266C-0B2B-424E-B56D-53C2A800A386}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Catalog.Tools.ProjectIndex", "src\Tools\ProjectIndex\Microsoft.Catalog.Tools.ProjectIndex.xproj", "{6D5FBD8F-DDB8-45E5-95B9-93F50995F878}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Catalog.Tools.ProjectIndexer", "src\Tools\ProjectIndexer\Microsoft.Catalog.Tools.ProjectIndexer.xproj", "{EEA3EE48-021C-43A4-B0A7-1E38624F660F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +86,14 @@ Global
 		{42A1266C-0B2B-424E-B56D-53C2A800A386}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42A1266C-0B2B-424E-B56D-53C2A800A386}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42A1266C-0B2B-424E-B56D-53C2A800A386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D5FBD8F-DDB8-45E5-95B9-93F50995F878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D5FBD8F-DDB8-45E5-95B9-93F50995F878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D5FBD8F-DDB8-45E5-95B9-93F50995F878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D5FBD8F-DDB8-45E5-95B9-93F50995F878}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA3EE48-021C-43A4-B0A7-1E38624F660F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA3EE48-021C-43A4-B0A7-1E38624F660F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA3EE48-021C-43A4-B0A7-1E38624F660F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA3EE48-021C-43A4-B0A7-1E38624F660F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,5 +113,7 @@ Global
 		{FEA41443-C13D-4B3C-893A-139DE0DDE810} = {3EC85F56-4B66-40C1-A0CE-4256053FB594}
 		{505925F2-8BE8-4EC7-ABA5-C432A496B9F0} = {3EC85F56-4B66-40C1-A0CE-4256053FB594}
 		{42A1266C-0B2B-424E-B56D-53C2A800A386} = {3EC85F56-4B66-40C1-A0CE-4256053FB594}
+		{6D5FBD8F-DDB8-45E5-95B9-93F50995F878} = {5F4FB42F-8961-467C-B9E2-14C5A7286CEA}
+		{EEA3EE48-021C-43A4-B0A7-1E38624F660F} = {5F4FB42F-8961-467C-B9E2-14C5A7286CEA}
 	EndGlobalSection
 EndGlobal
