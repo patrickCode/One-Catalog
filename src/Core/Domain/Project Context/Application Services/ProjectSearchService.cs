@@ -65,7 +65,8 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
                     Abstract = Get<string>(result, "Abstract"),
                     Description = Get<string>(result, "Description"),
                     Technologies = GetTechnologies(result).ToList(),
-                    Contacts = GetContacts(result).ToList()
+                    Contacts = GetContacts(result).ToList(),
+                    CreatedBy = new User(Get<string>(result, "CreatedBy"), string.Empty)
                 };
             }
         }

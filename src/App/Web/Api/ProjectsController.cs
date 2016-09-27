@@ -62,6 +62,15 @@ namespace Microsoft.Catalog.Web.Api
         }
 
         [HttpGet]
+        [Route("facets")]
+        public ProjectSearchResult Search([FromQuery]string q, [FromQuery]string[] technologies, [FromQuery]string[] contacts)
+        {
+            var techFilters = technologies.Select(tech => new Technology() { Name = tech }).ToList();
+            var contactFilters = contacts.Select(contact => new User() { Alias = contact });
+            return _searchService.Search(q, techFilters, 0, 0);
+        }
+
+        [HttpGet]
         [Route("suggest")]
         public IEnumerable<Project> Suggest(string q, string[] technologies, int top = 5)
         {

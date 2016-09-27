@@ -1,0 +1,77 @@
+﻿<!-- PAGE TITLE -->
+<div class="page-title">
+    <h2><span class="fa fa-info"></span> Registered Projects <small>{{count}} results found</small></h2>
+</div>
+<!-- END PAGE TITLE -->
+<!-- PAGE CONTENT WRAPPER -->
+<div class="page-content-wrap">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p>Use search to find projects. You can search by: name, abstract, description. Or use filters</p>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <span class="fa fa-search"></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="What are you looking for?" ng-model="searchText"/>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary" ng-click="search()">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-success btn-block"><span class="fa fa-plus"></span> Add new project</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div ng-repeat="project in projects" class="col-md-3" style="min-height">
+            <!-- CONTACT ITEM -->
+            <div class="panel panel-default">
+                <div class="panel-body profile">
+
+                    <div class="profile-data">
+                        <a class="link profile-data-name" ng-click="goToDetails(project)">{{project.name}}</a>
+                        <div class="profile-data-title">
+                            | <span ng-repeat="technology in project.technologies">{{technology.name }} | </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="contact-info">
+                        <p>
+                            <small>Contacts</small><br />
+                            <span ng-repeat="contact in project.contacts">{{contact.alias }} | </span>
+                        </p>
+                        <p><small>Abstract</small><br />{{project.abstract}}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- END CONTACT ITEM -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pagination pagination-sm pull-right push-down-10 push-up-10">
+                <li class="disabled"><a href="#">«</a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">»</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

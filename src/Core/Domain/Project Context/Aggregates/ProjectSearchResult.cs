@@ -8,6 +8,7 @@ namespace Microsoft.Catalog.Domain.ProjectContext.Aggregates
         public List<Project> Results { get; set; }
         public long TotalCount { get; set; }
         public FacetInfo Technologies { get; set; }
+        public FacetInfo Contacts { get; set; }
         public ProjectSearchResult()
         {
             Results = new List<Project>();
