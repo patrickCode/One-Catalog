@@ -2,11 +2,10 @@
 
 namespace Microsoft.Catalog.Domain.ProjectContext.ValueObjects
 {
-    public class Facet
+    public class FacetInfo
     {
         public string Name { get; set; }
         public List<Filter> Filters { get; set; }
-        public bool IsMultipleAllowed { get; set; }
-        public Facet() { }
+        public FacetInfo() { }
     }
 }
