@@ -31,6 +31,7 @@
             public const string CreateDocumentApi = "https://{0}.search.windows.net/indexes/[index name]/docs/index?api-version={1}";
 
             public const string SearchApi = "https://{0}.search.windows.net/indexes/[index name]/docs/search?api-version={1}";
+            public const string SuggestApi = "https://{0}.search.windows.net/indexes/[index name]/docs/suggest?api-version={1}";
             
             public const string AzureSearchApiKey = "api-key";
         }

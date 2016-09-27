@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using Domain.Technology_Context.Value_Objects;
+using Domain.TechnologyContext.ValueObjects;
 
-namespace Domain.Technology_Context.Aggregates
+namespace Domain.TechnologyContext.Aggregates
 {
     public class Technology
     {
-        public int Id { get; }
-        public string Name { get; }
-        public string Description { get; }
-        public List<Technology> RelatedTechnologies { get; }
-        public DateTime CreatedOn { get; }
-        public User CreatedBy { get; }
-        public DateTime LastModifiedOn { get; }
-        public User LastModifiedBy { get; }
-        public bool IsDeleted { get; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public List<Technology> RelatedTechnologies { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public User CreatedBy { get; set; }
+        public DateTime LastModifiedOn { get; set; }
+        public User LastModifiedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public Technology() { }
     }
 }

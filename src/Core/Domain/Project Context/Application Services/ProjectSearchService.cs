@@ -1,13 +1,13 @@
-﻿using Microsoft.Catalog.Azure.Search.Interfaces;
+﻿using System.Linq;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using Microsoft.Catalog.Azure.Search.Models;
-using Microsoft.Catalog.Azure.Search.Models.SearchResponseMetadata;
 using Microsoft.Catalog.Common.Models.Search;
+using Microsoft.Catalog.Azure.Search.Interfaces;
 using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
 using Microsoft.Catalog.Domain.ProjectContext.Aggregates;
 using Microsoft.Catalog.Domain.ProjectContext.ValueObjects;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json.Linq;
+using Microsoft.Catalog.Azure.Search.Models.SearchResponseMetadata;
 
 namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
 {
@@ -88,6 +88,52 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
                 yield return new User()
                 {
                     Alias = user.ToString()
+                };
+            }
+        }
+
+        public IEnumerable<Project> GetSuggestions(string searchText, List<Technology> technologies, int top)
+        {
+            var searchParameter = new SearchParameters()
+            {
+                SearchText = searchText,
+                AppliedFacets = new AppliedFacets()
+                {
+                    Filters = new List<AppliedFilters>()
+                    {
+                        new AppliedFilters()
+                        {
+                            FacetName = "Technologies",
+                            IsMultiple = true,
+                            Values = technologies.Select(tech => tech.Name).ToList()
+                        }
+                    }
+                },
+                Facets = new List<string>() { "Technologies" },
+                Suggester = new SuggesterInfo()
+                {
+                    Name = "project_suggester",
+                    IsFuzzyEnabled = true
+                },
+                SearchMetadata = new Metadata()
+                {
+                    ReturnFields = new List<string>() { "Name", "Abstract" },
+                    IncludeCount = true,
+                    Top = top
+                }
+            };
+            var response = _searchContext.Suggest("index-project", searchParameter);
+            return GetSuggestedProjects(response);
+        }
+
+        private IEnumerable<Project> GetSuggestedProjects(SuggestionResponse response)
+        {
+            foreach (var result in response.Results)
+            {
+                yield return new Project()
+                {
+                    Name = Get<string>(result, "Name"),
+                    Abstract = Get<string>(result, "Abstract")
                 };
             }
         }

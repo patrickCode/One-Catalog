@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.Catalog.Domain.ProjectContext.Aggregates;
 using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
-using System.Linq;
 using Microsoft.Catalog.Domain.ProjectContext.ValueObjects;
 
 namespace Microsoft.Catalog.Web.Api
@@ -19,6 +19,7 @@ namespace Microsoft.Catalog.Web.Api
             _queryService = projectQueryService;
             _projectService = projectService;
         }
+
         [HttpGet]
         [Route("{id}")]
         public Project Get([FromRoute] int id)
@@ -35,14 +36,14 @@ namespace Microsoft.Catalog.Web.Api
         [HttpPut]
         public void Modify([FromBody] Project project)
         {
-
+            _projectService.UpdateProject(project);
         }
 
         [HttpDelete]
         [Route("{id}")]
         public void Delete([FromRoute] int id)
         {
-
+            _projectService.DeleteProject(id);
         }
 
         [HttpGet]
@@ -53,7 +54,6 @@ namespace Microsoft.Catalog.Web.Api
         }
 
         [HttpGet]
-        [Route("search")]
         public ProjectSearchResult Search([FromQuery]string q, [FromQuery]string[] technologies, [FromQuery]string[] contacts, [FromQuery]int skip=0, [FromQuery]int top=10)
         {
             var techFilters = technologies.Select(tech => new Technology() { Name = tech }).ToList();
@@ -63,9 +63,10 @@ namespace Microsoft.Catalog.Web.Api
 
         [HttpGet]
         [Route("suggest")]
-        public IEnumerable<Project> Suggest(string q, string technologies, int top)
+        public IEnumerable<Project> Suggest(string q, string[] technologies, int top = 5)
         {
-            return new List<Project>();
+            var techFilters = technologies.Select(tech => new Technology() { Name = tech }).ToList();
+            return _searchService.GetSuggestions(q, techFilters, top);
         } 
     }
 }

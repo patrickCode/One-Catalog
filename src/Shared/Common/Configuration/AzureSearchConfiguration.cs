@@ -168,6 +168,14 @@ namespace Microsoft.Catalog.Common.Configuration
                 return string.Format(Constants.Search.SearchApi, ServiceName, Version);
             }
         }
+
+        public string SuggestApi
+        {
+            get
+            {
+                return string.Format(Constants.Search.SuggestApi, ServiceName, Version);
+            }
+        }
         #endregion
         #endregion
 

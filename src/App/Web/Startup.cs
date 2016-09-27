@@ -1,22 +1,23 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Catalog.Common.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Catalog.Azure.Search;
+using Microsoft.Catalog.Database.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Catalog.Common.Converters;
 using Microsoft.Catalog.Azure.Search.Models;
+using Microsoft.Catalog.Common.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Catalog.Azure.Search.Interfaces;
-using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
-using Microsoft.Catalog.Domain.ProjectContext.ApplicationServices;
-using Microsoft.Catalog.Database.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Catalog.Common.Interfaces.Repository;
 using Microsoft.Catalog.Database.Repositories.Read;
-using Microsoft.Catalog.Database.Repositories;
 using Microsoft.Catalog.Database.Repositories.Write;
+using Microsoft.Catalog.Common.Interfaces.Repository;
+using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
+using Microsoft.Catalog.Domain.TechnologyContext.Interfaces;
+using Microsoft.Catalog.Domain.ProjectContext.ApplicationServices;
+using Microsoft.Catalog.Domain.TechnologyContext.ApplicationServices;
 
 namespace Web
 {
@@ -71,6 +72,7 @@ namespace Web
 
             services.AddSingleton(config);
             services.AddSingleton<IConverter<SearchResponse>, JsonConverter<SearchResponse>>();
+            services.AddSingleton<IConverter<SuggestionResponse>, JsonConverter<SuggestionResponse>>();
             services.AddScoped<IAzureSearchContext, AzureSearchContext>();
             services.AddScoped<IProjectSearchService, ProjectSearchService>();
 
@@ -82,6 +84,9 @@ namespace Web
             services.AddScoped<IRepository<Project>, ProjectRepository>();
             services.AddScoped<IRepository<ProjectTechnologies>, ProjectTechnologiesRepository>();
             services.AddScoped<IProjectService, ProjectService>();
+
+            services.AddScoped<IReadOnlyRepository<Technology>, TechnologyReadOnlyRepository>();
+            services.AddScoped<ITechnologyReadService, TechnologyReadService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,14 +1,11 @@
-﻿using Microsoft.Azure.Search;
-using Microsoft.Azure.Search.Models;
-using Microsoft.Catalog.Azure.Search.Interfaces;
-using Microsoft.Catalog.Azure.Search.Models;
+﻿using System.Net.Http;
+using Microsoft.Azure.Search;
 using Microsoft.Catalog.Common;
-using Microsoft.Catalog.Common.Configuration;
 using Microsoft.Catalog.Common.Converters;
-using Microsoft.Catalog.Common.Exceptions;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+using Microsoft.Catalog.Azure.Search.Models;
+using Microsoft.Catalog.Common.Configuration;
+using Microsoft.Catalog.Common.Models.Search;
+using Microsoft.Catalog.Azure.Search.Interfaces;
 
 namespace Microsoft.Catalog.Azure.Search
 {
@@ -16,47 +13,32 @@ namespace Microsoft.Catalog.Azure.Search
     {
         private SearchServiceClient _client;
         private IConverter<SearchResponse> _resposneConverter;
+        private IConverter<SuggestionResponse> _suggestionResponseConverter;
         private AzureSearchConfiguration _configuration;
         private AzureSearchHttpClient _httpClient;
         private readonly string _index;
-        public AzureSearchContext(AzureSearchConfiguration configuration, IConverter<SearchResponse> converter)
+        public AzureSearchContext(AzureSearchConfiguration configuration, IConverter<SearchResponse> converter, IConverter<SuggestionResponse> suggestionResponseConverter)
         {
             _configuration = configuration;
             _resposneConverter = converter;
+            _suggestionResponseConverter = suggestionResponseConverter;
             _httpClient = new AzureSearchHttpClient(_configuration);
         }
 
-        private void Connect(int retry = 1)
-        {
-            try
-            {
-                var credentials = new SearchCredentials(_configuration.ServiceSecretKey);
-                _client = new SearchServiceClient(_configuration.ServiceName, credentials);
-                //TODO
-                //Set Retry Policy
-            }
-            catch (Exception error)
-            {
-                if (retry >= _configuration.MaxRetryCount)
-                    throw new AzureSearchException(message: Constants.ExceptionMessages.AzureSearch.UnableToConnect,
-                        exception: error,
-                        correlationId: Guid.NewGuid().ToString(),
-                        exceptionCode: (int)Constants.ExceptionCodes.AzureSearch.UnableToConnect);
-
-                var randomDelay = 0;
-                if (_configuration.IsExponentialRetry)
-                    randomDelay = new Random().Next(3);
-                Task.Delay(_configuration.RetryInterval.Add(new TimeSpan(0, 0, randomDelay)));
-                Connect(retry + 1);
-            }
-        }
-
-        public SearchResponse Search(string index, Common.Models.Search.SearchParameters searchParameters)
+        public SearchResponse Search(string index, SearchParameters searchParameters)
         {   
             var searchBody = SearchBody.FromParameters(searchParameters);
             var endpoint = _configuration.SearchApi.Replace(Constants.Search.IndexName, index);
             var searchResult = _httpClient.SendRequest(endpoint, HttpMethod.Post, searchBody.ToJson());
             return _resposneConverter.Deserialize(searchResult);
+        }
+
+        public SuggestionResponse Suggest(string index, SearchParameters searchParameters)
+        {
+            var suggestBody = SuggestionBody.FromParameters(searchParameters);
+            var endpoint = _configuration.SuggestApi.Replace(Constants.Search.IndexName, index);
+            var suggestionResult = _httpClient.SendRequest(endpoint, HttpMethod.Post, suggestBody.ToJson());
+            return _suggestionResponseConverter.Deserialize(suggestionResult);
         }
     }
 }

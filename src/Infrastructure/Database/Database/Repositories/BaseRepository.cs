@@ -90,6 +90,10 @@ namespace Microsoft.Catalog.Database.Repositories
         public void Update(TEntity entity, string modifiedBy = null)
         {
             entity = AddModifedByAndModifedOn(entity, modifiedBy);
+            var attachedEntity = _dbContext.ChangeTracker.Entries<TEntity>()
+                .FirstOrDefault(e => ((dynamic)(e.Entity)).Id == ((dynamic)entity).Id);
+            if (attachedEntity != null)
+                _dbContext.Entry<TEntity>(attachedEntity.Entity).State = EntityState.Detached;
             _dbContext.Set<TEntity>().Attach(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
@@ -99,6 +103,10 @@ namespace Microsoft.Catalog.Database.Repositories
             return Task.Run(() =>
             {
                 entity = AddModifedByAndModifedOn(entity, modifiedBy);
+                var attachedEntity = _dbContext.ChangeTracker.Entries<TEntity>()
+                    .FirstOrDefault(e => ((dynamic)(e.Entity)).Id == ((dynamic)entity).Id);
+                if (attachedEntity != null)
+                    _dbContext.Entry<TEntity>(attachedEntity.Entity).State = EntityState.Detached;
                 _dbContext.Set<TEntity>().Attach(entity);
                 _dbContext.Entry(entity).State = EntityState.Modified;
             });

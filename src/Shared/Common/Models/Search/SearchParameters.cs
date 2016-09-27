@@ -17,6 +17,7 @@ namespace Microsoft.Catalog.Common.Models.Search
         }
         public AppliedFacets AppliedFacets { get; set; }
         public List<string> Facets { get; set; }
+        public SuggesterInfo Suggester { get; set; }
         public Metadata SearchMetadata { get; set; }
         public ScoringInfo Scoring { get; set; }
         public HighlightInfo Highlight{ get; set; }
@@ -45,6 +46,11 @@ namespace Microsoft.Catalog.Common.Models.Search
         public QueryType QueryType { get; set; }
         public List<string> SearchFields { get; set; }
         public List<string> ReturnFields { get; set; }
+    }
+    public class SuggesterInfo
+    {
+        public string Name { get; set; }
+        public bool IsFuzzyEnabled { get; set; }
     }
     public class AppliedFacets
     {
