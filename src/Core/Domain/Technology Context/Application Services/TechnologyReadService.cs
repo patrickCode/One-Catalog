@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using Domain.TechnologyContext.Aggregates;
-using Domain.TechnologyContext.ValueObjects;
 using Model = Microsoft.Catalog.Database.Models;
 using Microsoft.Catalog.Common.Interfaces.Repository;
 using Microsoft.Catalog.Domain.TechnologyContext.Interfaces;
@@ -27,8 +26,7 @@ namespace Microsoft.Catalog.Domain.TechnologyContext.ApplicationServices
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                Description = entity.Description,
-                CreatedBy = new User(entity.CreatedBy, string.Empty)
+                Description = entity.Description
             };
         }
     }

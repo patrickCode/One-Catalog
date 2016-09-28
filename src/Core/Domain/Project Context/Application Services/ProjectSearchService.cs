@@ -19,7 +19,7 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
             _searchContext = searchContext;
         }
 
-        public ProjectSearchResult Search(string searchText, List<Technology> technologies, int skip, int top)
+        public ProjectSearchResult Search(string searchText, List<Technology> technologies, List<User> contacts, int skip, int top)
         {
             var searchParameter = new SearchParameters()
             {
@@ -33,6 +33,12 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
                             FacetName = "Technologies",
                             IsMultiple = true,
                             Values = technologies.Select(tech => tech.Name).ToList()
+                        },
+                        new AppliedFilters()
+                        {
+                            FacetName = "Contacts",
+                            IsMultiple = true,
+                            Values = contacts.Select(contact => contact.Alias).ToList()
                         }
                     }
                 },

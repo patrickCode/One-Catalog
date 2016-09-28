@@ -22,11 +22,28 @@
             </div>
         </div>
     </li>
-    <li class="active">
-        <a href="index.html"><span class="fa fa-desktop"></span> <span class="xn-text">Catalog</span></a>
+    <li ng-class="{'active': (state.current.name === 'home.catalog' || state.current.name === 'home.details')}">
+        <a href="#/home/catalog"><span class="fa fa-desktop"></span> <span class="xn-text">Catalog</span></a>
     </li>
-    <li>
-        <a href="index.html"><span class="fa fa-dashboard"></span> <span class="xn-text">My Projects</span></a>
+    <li ng-class="{'active': (state.current.name === 'home.myCatalogue' || state.current.name === 'home.addProject')}">
+        <a href="#/home/mycatalog"><span class="fa fa-dashboard"></span> <span class="xn-text">My Projects</span></a>
+    </li>
+
+    <li ng-show="state.current.name==='home.catalog'" class="xn-title">Filters</li>
+    <li ng-show="state.current.name==='home.catalog'" ng-repeat="facet in facets" class="xn-openable active">
+        <a href="javascript:void(0)">
+            <span class="fa fa-cogs"></span>
+            <span class="xn-text">{{facet.name}}</span>
+        </a>
+        <ul>
+            <li ng-repeat="filter in facet.filters">
+                <a href="javascript:void(0)">
+                    <input type="checkbox" ng-model="facetmodel[facet.name][filter.name]" ng-change="filterApplied(facet.name)" />
+                    <span>{{filter.name}}</span>
+                    <span class="label label-default pull-right">{{filter.count}}</span>
+                </a>
+            </li>
+        </ul>
     </li>
 </ul>
 <!-- END X-NAVIGATION -->

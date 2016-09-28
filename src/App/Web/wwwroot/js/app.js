@@ -3,7 +3,7 @@
 angular.module("shell", ["common"]);
 angular.module("catalog", ["common"]);
 
-angular.module("msonecatalog", ["ui.router", "AdalAngular", "shell", "catalog", "common"]);
+angular.module("msonecatalog", ["ui.router", "AdalAngular", "ngTagsInput", "shell", "catalog", "common"]);
 
 angular.module("msonecatalog")
     .config(['$stateProvider', '$urlRouterProvider', 'adalAuthenticationServiceProvider', '$httpProvider',
@@ -29,7 +29,17 @@ angular.module("msonecatalog")
                             templateUrl: '/templates/catalog/detail.html',
                             controller: "catalogDetailsController",
                             requireADLogin: true
-                        });
+                        })
+            .state('home.myCatalogue', {
+                url: "/mycatalog",
+                templateUrl: "/templates/catalog/userCatalog.html",
+                controller: "userCatalogController"
+            })
+            .state('home.addProject', {
+                url: "/add",
+                templateUrl: "/templates/catalog/addProject.html",
+                controller: "addProjectController"
+            });
 
             adalProvider.init({
                 instance: 'https://login.microsoftonline.com/',

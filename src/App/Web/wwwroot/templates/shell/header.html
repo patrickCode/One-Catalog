@@ -1,22 +1,32 @@
 ﻿<ul class="x-navigation x-navigation-horizontal x-navigation-panel">
     <!-- TOGGLE NAVIGATION -->
-    <li class="xn-icon-button">
-        <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+
+    <li class="xn-text">
+        <a href="javascript:void(0)">
+            <span>0.0.1 (Alpha Version)</span>
+        </a>
     </li>
+
+    <li class="xn-icon-button">
+        <a href="javascript:void(0)" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+    </li>
+    
+
+    
     <!-- END TOGGLE NAVIGATION -->
     <!-- SEARCH -->
-    <li class="xn-search">
+    <!--<li class="xn-search">
         <form role="form" ng-submit="search()">
             <input type="text" name="search" placeholder="Search Projects" ng-model="catalog.searchtext" />
             <input type="submit" value="Search"/>
         </form>
-    </li>
+    </li>-->
     <!-- END SEARCH -->
-    
     <!-- NOTIFICATIONS -->
+
     <li class="xn-icon-button pull-right">
-        <a href="javascript(void)"><span class="fa fa-tasks"></span></a>
-        <div class="informer informer-warning">3</div>
+        <a href="javascript:void(0)"><span class="fa fa-tasks"></span></a>
+        <!--<div class="informer informer-warning">3</div>-->
         <!--<div class="panel panel-primary animated zoomIn xn-drop-left xn-panel-dragging">
             <div class="panel-heading">
                 <h3 class="panel-title"><span class="fa fa-tasks"></span> Tasks</h3>
@@ -60,4 +70,23 @@
         </div>-->
     </li>
     <!-- END TASKS -->
+
+    <li class="xn-icon-button pull-right">
+        <a href="/#/home/add">
+            <span class="fa fa-plus"></span>
+        </a>
+    </li>
+
+    <li class="xn-icon-button pull-right">
+        <a href="/#/home/mycatalog">
+            <span class="fa fa-dashboard"></span>
+        </a>
+    </li>
+
+    <li class="xn-icon-button pull-right">
+        <a href="/#/home/catalog">
+            <span class="fa fa-desktop"></span>
+        </a>
+    </li>
+
 </ul>

@@ -10,11 +10,13 @@
                         </div>
                         <div class="post-date"><span class="fa fa-calendar"></span> {{project.createdOn | date}} / <a href="pages-blog-post.html#comments">3 Comments</a> / <a href="pages-profile.html">by {{project.createdBy.alias}}</a></div>
                         <div class="post-text">
-                            <h4>Description</h4>
+                            <h3>Abstract</h3>
+                            <p>{{project.abstract}}</p>
+                            <h3>Description</h3>
                             <p>{{project.description}}</p>
-                            <h4 ng-hide='project.additionalDetails === ""'>Additional Details</h4>
+                            <h3 ng-hide='project.additionalDetails === ""'>Additional Details</h3>
                             <p>{{project.additionalDetails}}</p>
-                            <h4 ng-hide="project.additionalLinks.length === 0">Links</h4>
+                            <h3 ng-hide="project.additionalLinks.length === 0">Links</h3>
                             <ul>
                                 <li ng-repeat="link in project.additionalLinks">
                                     <a ng-href="link.href">{{link.linkType}}</a>
@@ -89,11 +91,9 @@
 
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h3>Abstract</h3>
-                    <div class="medium">
-                        <p>
-                            {{project.abstract}}
-                        </p>
+                    <h3>Contact Us</h3>
+                    <div class="links">
+                        <a ng-repeat="contact in project.contacts" ng-href="mailto:{{contact.alias}}">{{contact.alias}}</a>
                     </div>
                 </div>
             </div>

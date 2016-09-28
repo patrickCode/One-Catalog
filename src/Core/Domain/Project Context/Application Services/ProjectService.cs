@@ -33,7 +33,7 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
                 AdditionalDetail = project.AdditionalDetails,
                 AdditionalLinks = (project.AdditionalLinks == null || !project.AdditionalLinks.Any()) 
                                     ? null : string.Join(",", project.AdditionalLinks.Select(link => link.Href)),
-                CodeLink = project.CodeLink != null ? project.CodeLink.Href.ToString() : null,
+                CodeLink = project.CodeLink != null && project.CodeLink.Href != null ? project.CodeLink.Href.ToString() : null,
                 Contacts = (project.Contacts == null || !project.Contacts.Any())
                             ? "[]" : string.Format("[{0}]", string.Join(",", project.Contacts.Select(contact => string.Format("\"{0}\"", contact.Alias)))),
                 CreatedBy = project.CreatedBy.Alias,
@@ -43,7 +43,7 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
                 LastModifiedBy = project.CreatedBy.Alias,
                 LastModifiedOn = DateTime.UtcNow,
                 Name = project.Name,
-                PreviewLink = project.PreviewLink != null ? project.PreviewLink.Href.ToString(): null,
+                PreviewLink = project.PreviewLink != null && project.PreviewLink.Href != null ? project.PreviewLink.Href.ToString(): null,
                 Technologies = (project.Technologies == null || !project.Technologies.Any())
                                 ? "[]": string.Format("[{0}]", string.Join(",", project.Technologies.Select(tech => string.Format("\"{0}\"", tech.Name))))
             };

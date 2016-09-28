@@ -19,14 +19,14 @@
                                     <div class="input-group-addon">
                                         <span class="fa fa-search"></span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="What are you looking for?" ng-model="searchText"/>
+                                    <input type="text" class="form-control" placeholder="What are you looking for?" ng-model="searchText" />
                                     <div class="input-group-btn">
                                         <button class="btn btn-primary" ng-click="search()">Search</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-success btn-block"><span class="fa fa-plus"></span> Add new project</button>
+                                <button class="btn btn-success btn-block" ng-click="addNewProject()"><span class="fa fa-plus"></span> Add new project</button>
                             </div>
                         </div>
                     </form>
@@ -65,12 +65,15 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="pagination pagination-sm pull-right push-down-10 push-up-10">
-                <li class="disabled"><a href="#">«</a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">»</a></li>
+                <li ng-class="{'disabled': (pagination.currentPage === 1)}" ng-click="pagination.currentPage !== 1 && changePage(pagination.currentPage - 1)">
+                    <a href="javascript:void(0)">«</a>
+                </li>
+                <li ng-repeat="page in pages" ng-class="{'active': (page + 1) === pagination.currentPage}" ng-click="changePage(page + 1)">
+                    <a href="javascript:void(0)">{{page + 1}}</a>
+                </li>
+                <li ng-class="{'disabled': (pagination.currentPage === pages.length)}"  ng-click="pagination.currentPage !== pages.length && changePage(pagination.currentPage + 1)">
+                    <a href="javascript:void(0)">»</a>
+                </li>
             </ul>
         </div>
     </div>

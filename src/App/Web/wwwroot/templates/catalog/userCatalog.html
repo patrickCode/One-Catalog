@@ -1,0 +1,30 @@
+﻿<div class="page-title">
+    <h2><span class="fa fa-arrow-circle-o-left"></span> My Catalogue</h2>
+</div>
+
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- PROJECT DETAILS -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Resgistered Projects <small>{{count}} projects found</small></h3>
+                </div>
+                <div class="panel-body list-group list-group-contacts">
+                    <a ng-repeat="project in projects" href="javascript:void(0)" class="list-group-item" ng-click="goToDetails(project)">
+                        <span class="contacts-title">{{project.name}}</span>
+                        <p>{{project.abstract}}</p>
+                        <p>
+                            <span ng-repeat="technology in project.technologies">| {{technology.name}} </span>
+                        </p>
+                        <div class="list-group-controls">
+                            <button class="btn btn-primary btn-rounded"><span class="fa fa-pencil"></span></button>
+                            <button class="btn btn-primary btn-rounded"><span class="fa fa-eraser"></span></button>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- END PROJECT DETAILS -->
+        </div>
+    </div>
+</div>

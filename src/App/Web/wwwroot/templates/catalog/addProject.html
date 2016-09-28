@@ -1,0 +1,117 @@
+﻿<!-- PAGE CONTENT WRAPPER -->
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+
+            <form class="form-horizontal">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Create New Project</strong></h3>
+                        <ul class="panel-controls">
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <p>Please fill in the form to submit a new Project</p>
+                    </div>
+                    <div class="panel-body form-group-separated">
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Project Name</label>
+                            <div class="col-md-6 col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                    <input type="text" class="form-control" ng-model="project.name"/>
+                                </div>
+                                <span class="help-block">Give a suitable name for your project or component</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Abstract</label>
+                            <div class="col-md-6 col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-desktop"></span></span>
+                                    <input type="text" class="form-control" ng-model="project.abstract"/>
+                                </div>
+                                <span class="help-block">Give one line short abstract of your project</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Description</label>
+                            <div class="col-md-6 col-xs-12">
+                                <textarea class="form-control" rows="5" ng-model="project.description"></textarea>
+                                <span class="help-block">Give a detailed description your project</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Additional Details</label>
+                            <div class="col-md-6 col-xs-12">
+                                <textarea class="form-control" rows="5" ng-model="project.additionalDetails"></textarea>
+                                <span class="help-block">Provide any additional details that you feel must be displayed</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Technologies</label>
+                            <div class="col-md-6 col-xs-12">
+                                <tags-input ng-model="techTags" add-on-paste="true">
+                                    <auto-complete source="getTechnologySuggestions($query)"></auto-complete>
+                                </tags-input>
+                                <span class="help-block">Add all technologies that you want to showcase in the project</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Contacts</label>
+                            <div class="col-md-6 col-xs-12">
+                                <tags-input ng-model="contactTags" add-on-paste="true">
+                                    <auto-complete source="getTechnologySuggestions($query)"></auto-complete>
+                                </tags-input>
+                                <span class="help-block">Add alias of users who can be contacted for this project</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">File (only for Demo)</label>
+                            <div class="col-md-6 col-xs-12">
+                                <input type="file" class="fileinput btn-primary" name="filename" id="filename" title="Browse file" />
+                                <span class="help-block">Upload any supporting file</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Code</label>
+                            <div class="col-md-6 col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-link"></span></span>
+                                    <input type="url" class="form-control" ng-model="project.codeLink.href"/>
+                                </div>
+                                <span class="help-block">Please give a link to the code base, if available, of your project</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-12 control-label">Preview</label>
+                            <div class="col-md-6 col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-link"></span></span>
+                                    <input type="url" class="form-control" ng-model="project.previewLink.href"/>
+                                </div>
+                                <span class="help-block">Please give a preview link, if available, of your project</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-default">Clear Form</button>
+                        <button class="btn btn-primary pull-right" ng-click="addProject()">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

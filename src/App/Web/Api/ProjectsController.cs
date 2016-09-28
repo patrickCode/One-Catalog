@@ -8,7 +8,7 @@ using Microsoft.Catalog.Domain.ProjectContext.ValueObjects;
 namespace Microsoft.Catalog.Web.Api
 {
     [Route("api/projects")]
-    public class ProjectsController: Controller
+    public class ProjectsController : Controller
     {
         private readonly IProjectSearchService _searchService;
         private readonly IProjectQueryService _queryService;
@@ -25,7 +25,7 @@ namespace Microsoft.Catalog.Web.Api
         public Project Get([FromRoute] int id)
         {
             return _queryService.Get(id);
-        }   
+        }
 
         [HttpPost]
         public int Create([FromBody] Project project)
@@ -48,17 +48,18 @@ namespace Microsoft.Catalog.Web.Api
 
         [HttpGet]
         [Route("~/api/users/{userid}/projects")]
-        public IEnumerable<Project> GetByContact([FromRoute] string userid)
+        public ProjectSearchResult GetByContact([FromRoute] string userid, [FromQuery]int skip = 0, [FromQuery]int top = 10)
         {
-            return new List<Project>();
+            var contactFilters = new List<User>() { new User(userid, string.Empty) };
+            return _searchService.Search("*", new List<Technology>(), contactFilters, skip, top);
         }
 
         [HttpGet]
-        public ProjectSearchResult Search([FromQuery]string q, [FromQuery]string[] technologies, [FromQuery]string[] contacts, [FromQuery]int skip=0, [FromQuery]int top=10)
+        public ProjectSearchResult Search([FromQuery]string q, [FromQuery]string[] technologies, [FromQuery]string[] contacts, [FromQuery]int skip = 0, [FromQuery]int top = 10)
         {
             var techFilters = technologies.Select(tech => new Technology() { Name = tech }).ToList();
-            var contactFilters = contacts.Select(contact => new User() { Alias = contact });
-            return _searchService.Search(q, techFilters, skip, top);
+            var contactFilters = contacts.Select(contact => new User() { Alias = contact }).ToList();
+            return _searchService.Search(q, techFilters, contactFilters, skip, top);
         }
 
         [HttpGet]
@@ -66,8 +67,8 @@ namespace Microsoft.Catalog.Web.Api
         public ProjectSearchResult Search([FromQuery]string q, [FromQuery]string[] technologies, [FromQuery]string[] contacts)
         {
             var techFilters = technologies.Select(tech => new Technology() { Name = tech }).ToList();
-            var contactFilters = contacts.Select(contact => new User() { Alias = contact });
-            return _searchService.Search(q, techFilters, 0, 0);
+            var contactFilters = contacts.Select(contact => new User() { Alias = contact }).ToList();
+            return _searchService.Search(q, techFilters, contactFilters, 0, 0);
         }
 
         [HttpGet]
@@ -76,6 +77,6 @@ namespace Microsoft.Catalog.Web.Api
         {
             var techFilters = technologies.Select(tech => new Technology() { Name = tech }).ToList();
             return _searchService.GetSuggestions(q, techFilters, top);
-        } 
+        }
     }
 }

@@ -12,9 +12,6 @@ namespace Domain.TechnologyContext.Aggregates
         public List<Technology> RelatedTechnologies { get; set; }
         public DateTime CreatedOn { get; set; }
         public User CreatedBy { get; set; }
-        public DateTime LastModifiedOn { get; set; }
-        public User LastModifiedBy { get; set; }
-        public bool IsDeleted { get; set; }
         public Technology() { }
     }
 }
