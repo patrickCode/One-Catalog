@@ -5,7 +5,7 @@
         var search = function (reset, facet) {
             $scope.errorOcurred = false;
             $scope.loading = true;
-            if (reset !== undefined || reset !== null || reset === true)
+            if (reset !== undefined && reset !== null && reset === true)
                 $scope.pagination.currentPage = 1;
             catalogData.getProjects($scope.searchText, $scope.selectedFacets.technologies, $scope.pagination.currentPage, $scope.pagination.pageSize)
                 .then(function (data) {

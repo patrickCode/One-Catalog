@@ -5,7 +5,7 @@
         var getUserProjects = function (reset) {
             $scope.loading = true;
             $scope.errorOcurred = false;
-            if (reset !== undefined || reset !== null || reset === true)
+            if (reset !== undefined && reset !== null && reset === true)
                 $scope.pagination.currentPage = 1;
             catalogData.getProjectsByUser($scope.userId, $scope.searchText, $scope.pagination.currentPage, $scope.pagination.pageSize)
                 .then(function (data) {

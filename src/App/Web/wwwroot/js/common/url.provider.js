@@ -1,8 +1,8 @@
 ﻿(function (module) {
 
     var urlProvider = function () {
-        //var baseUrl = "http://msonecatalogdev.azurewebsites.net/api/";
-        var baseUrl = "http://localhost:8843/api/";
+        var baseUrl = "http://msonecatalogdev.azurewebsites.net/api/";
+        //var baseUrl = "http://localhost:8843/api/";
         var projectBaseUrl = baseUrl + "projects";
 
         var technologyBaseUrl = baseUrl + "technologies";
