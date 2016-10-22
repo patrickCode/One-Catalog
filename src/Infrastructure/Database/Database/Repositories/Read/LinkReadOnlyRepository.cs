@@ -1,16 +1,9 @@
-﻿using System.Linq;
-using Microsoft.Catalog.Database.Models;
+﻿using Microsoft.Catalog.Database.Models;
 
 namespace Microsoft.Catalog.Database.Repositories.Read
 {
     public class LinkReadOnlyRepository: BaseReadOnlyRepository<Link>
     {
         public LinkReadOnlyRepository(OneCatalogDbContext dbContext): base(dbContext) { }
-
-        public override Link Get(object id)
-        {
-            var linkId = (int)id;
-            return _dbContext.Set<Link>().FirstOrDefault(link => link.Id == linkId);
-        }
     }
 }

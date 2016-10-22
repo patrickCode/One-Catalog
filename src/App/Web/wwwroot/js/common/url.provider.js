@@ -1,11 +1,13 @@
 ﻿(function (module) {
-    
+
     var urlProvider = function () {
         //var baseUrl = "http://msonecatalogdev.azurewebsites.net/api/";
         var baseUrl = "http://localhost:8843/api/";
         var projectBaseUrl = baseUrl + "projects";
+
         var technologyBaseUrl = baseUrl + "technologies";
-        
+        var technologySuggestionUrl = technologyBaseUrl + "/suggest?name=";
+
         var getProjectBaseUrl = function () {
             return projectBaseUrl;
         }
@@ -26,9 +28,9 @@
             return url;
         }
 
-        var getUserProjectsUrl = function (userId, skip, top) {
-            var url = baseUrl + "users/" + userId + "/projects?";
-            url = url + "skip" + skip + "&top=" + top;
+        var getUserProjectsUrl = function (userId, searchText, skip, top) {
+            var url = baseUrl + "users/" + userId + "/projects?q=" + searchText;
+            url = url + "&skip=" + skip + "&top=" + top;
             return url;
         }
 
@@ -36,12 +38,20 @@
             return technologyBaseUrl;
         }
 
+        var getTechnologySuggestionUrl = function (technology) {
+            return technologySuggestionUrl + technology;
+        }
+
         return {
+            //Project
             getProjectBaseUrl: getProjectBaseUrl,
             getProjectDetailsUrl: getProjectDetailsUrl,
             getProjectSearchUrl: getProjectSearchUrl,
             getUserProjectsUrl: getUserProjectsUrl,
-            getTechnologyBaseUrl: getTechnologyBaseUrl
+
+            //Technology
+            getTechnologyBaseUrl: getTechnologyBaseUrl,
+            getTechnologySuggestionUrl: getTechnologySuggestionUrl
         }
     }
 

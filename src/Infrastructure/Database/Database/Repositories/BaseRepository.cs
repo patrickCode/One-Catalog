@@ -4,11 +4,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Catalog.Database.Models;
 using Microsoft.Catalog.Common.Interfaces.Repository;
 
 namespace Microsoft.Catalog.Database.Repositories
 {
-    public class BaseRepository<TEntity> : IRepository<TEntity>, IRepositoryAsync<TEntity> where TEntity : class
+    public class BaseRepository<TEntity> : IRepository<TEntity>, IRepositoryAsync<TEntity> where TEntity : BaseModel
     {
         protected readonly DbContext _dbContext;
         public BaseRepository(DbContext dbContext)
@@ -16,19 +17,19 @@ namespace Microsoft.Catalog.Database.Repositories
             _dbContext = dbContext;
         }
 
-        private dynamic AddCreatedByAndCreatedOn(dynamic entity, string createdBy = null)
+        private TEntity AddCreatedByAndCreatedOn(TEntity entity, string createdBy = null)
         {
-            if (createdBy == null)
-                createdBy = "SYS";
+            if (string.IsNullOrEmpty(createdBy))
+                createdBy = string.IsNullOrEmpty(entity.CreatedBy) ? "SYS" : entity.CreatedBy;
             entity.CreatedBy = createdBy;
             entity.CreatedOn = DateTime.UtcNow;
             return entity;
         }
 
-        private dynamic AddModifedByAndModifedOn(dynamic entity, string modifiedBy = null)
+        private TEntity AddModifedByAndModifedOn(TEntity entity, string modifiedBy = null)
         {
-            if (modifiedBy == null)
-                modifiedBy = "SYS";
+            if (string.IsNullOrEmpty(modifiedBy))
+                modifiedBy = string.IsNullOrEmpty(entity.LastModifiedBy) ? "SYS" : entity.LastModifiedBy;
             entity.LastModifiedBy = modifiedBy;
             entity.LastModifiedOn = DateTime.UtcNow;
             return entity;
@@ -44,11 +45,6 @@ namespace Microsoft.Catalog.Database.Repositories
             return null;
         }
 
-        private int GetId(dynamic entity)
-        {
-            return entity.Id;
-        }
-
         public void Create(TEntity entity, string createdBy = null)
         {
             entity = AddCreatedByAndCreatedOn(entity, createdBy);
@@ -62,7 +58,7 @@ namespace Microsoft.Catalog.Database.Repositories
             entity = AddModifedByAndModifedOn(entity, createdBy);
             var addedEntity = _dbContext.Set<TEntity>().Add(entity);
             Save();
-            return GetId(entity);
+            return entity.Id;
         }
 
         public async Task<int> CreateAndSaveAsync(TEntity entity, string createdBy = null)
@@ -73,7 +69,7 @@ namespace Microsoft.Catalog.Database.Repositories
                 entity = AddCreatedByAndCreatedOn(entity, createdBy);
                 var addedEntity = _dbContext.Set<TEntity>().Add(entity);
                 await SaveAsync();
-                return GetId(addedEntity.Entity);
+                return addedEntity.Entity.Id;
             });
         }
 
@@ -91,7 +87,7 @@ namespace Microsoft.Catalog.Database.Repositories
         {
             entity = AddModifedByAndModifedOn(entity, modifiedBy);
             var attachedEntity = _dbContext.ChangeTracker.Entries<TEntity>()
-                .FirstOrDefault(e => ((dynamic)(e.Entity)).Id == ((dynamic)entity).Id);
+                .FirstOrDefault(e => e.Entity.Id == entity.Id);
             if (attachedEntity != null)
                 _dbContext.Entry<TEntity>(attachedEntity.Entity).State = EntityState.Detached;
             _dbContext.Set<TEntity>().Attach(entity);
@@ -104,7 +100,7 @@ namespace Microsoft.Catalog.Database.Repositories
             {
                 entity = AddModifedByAndModifedOn(entity, modifiedBy);
                 var attachedEntity = _dbContext.ChangeTracker.Entries<TEntity>()
-                    .FirstOrDefault(e => ((dynamic)(e.Entity)).Id == ((dynamic)entity).Id);
+                    .FirstOrDefault(e => e.Entity.Id == entity.Id);
                 if (attachedEntity != null)
                     _dbContext.Entry<TEntity>(attachedEntity.Entity).State = EntityState.Detached;
                 _dbContext.Set<TEntity>().Attach(entity);
@@ -112,36 +108,54 @@ namespace Microsoft.Catalog.Database.Repositories
             });
         }
 
-        public void Delete(object id)
+        public void Delete(object id, bool softDelete = false)
         {
-            var entity = _dbContext.Set<TEntity>().FirstOrDefault(obj => (GetProperty(obj, "Id") == id));
+            var entity = _dbContext.Set<TEntity>().FirstOrDefault(obj => obj.Id == (int)id);
             if (entity != null)
-                Delete(entity);
+                Delete(entity, softDelete);
         }
 
-        public void Delete(TEntity entity)
+        public void Delete(TEntity entity, bool softDelete = false)
         {
-            var dbSet = _dbContext.Set<TEntity>();
-            if (_dbContext.Entry(entity).State == EntityState.Detached)
-                dbSet.Attach(entity);
-            dbSet.Remove(entity);
-        }
-
-        public Task DeleteAsync(object id)
-        {
-            var entity = _dbContext.Set<TEntity>().FirstOrDefault(obj => (GetProperty(obj, "Id") == id));
-            return DeleteAsync(entity);
-        }
-
-        public Task DeleteAsync(TEntity entity)
-        {
-            return Task.Run(() =>
+            if (!softDelete)
             {
                 var dbSet = _dbContext.Set<TEntity>();
                 if (_dbContext.Entry(entity).State == EntityState.Detached)
                     dbSet.Attach(entity);
                 dbSet.Remove(entity);
-            });
+            }
+            else
+            {
+                entity.IsDeleted = true;
+                Update(entity);
+            }
+        }
+
+        public Task DeleteAsync(object id, bool softDelete = false)
+        {
+            var entity = _dbContext.Set<TEntity>().FirstOrDefault(obj => obj.Id == (int)id);
+            return DeleteAsync(entity, softDelete);
+        }
+
+        public Task DeleteAsync(TEntity entity, bool softDelete = false)
+        {
+            if (!softDelete)
+            {
+                return Task.Run(() =>
+                {
+
+                    var dbSet = _dbContext.Set<TEntity>();
+                    if (_dbContext.Entry(entity).State == EntityState.Detached)
+                        dbSet.Attach(entity);
+                    dbSet.Remove(entity);
+
+                });
+            }
+            else
+            {
+                entity.IsDeleted = true;
+                return UpdateAsync(entity);
+            }
         }
 
         public void Save()

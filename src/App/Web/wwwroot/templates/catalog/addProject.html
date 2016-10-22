@@ -2,17 +2,20 @@
 <div class="page-content-wrap">
     <div class="row">
         <div class="col-md-12">
-
-            <form class="form-horizontal">
+            <img class="central" src="../../images/Loader.gif" ng-show="loading" />
+            <form class="form-horizontal" ng-hide="editMode && loading">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><strong>Create New Project</strong></h3>
+                        <h3 class="panel-title">
+                            <strong ng-hide="editMode">Create New Project</strong>
+                            <strong ng-show="editMode">Edit Project</strong>
+                        </h3>
                         <ul class="panel-controls">
                             <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
                         </ul>
                     </div>
                     <div class="panel-body">
-                        <p>Please fill in the form to submit a new Project</p>
+                        <p ng-hide="editMode">Please fill in the form to submit a new Project</p>
                     </div>
                     <div class="panel-body form-group-separated">
                         <div class="form-group">
@@ -20,7 +23,7 @@
                             <div class="col-md-6 col-xs-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-                                    <input type="text" class="form-control" ng-model="project.name"/>
+                                    <input type="text" class="form-control" ng-model="project.name" />
                                 </div>
                                 <span class="help-block">Give a suitable name for your project or component</span>
                             </div>
@@ -31,7 +34,7 @@
                             <div class="col-md-6 col-xs-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="fa fa-desktop"></span></span>
-                                    <input type="text" class="form-control" ng-model="project.abstract"/>
+                                    <input type="text" class="form-control" ng-model="project.abstract" />
                                 </div>
                                 <span class="help-block">Give one line short abstract of your project</span>
                             </div>
@@ -81,13 +84,13 @@
                                 <span class="help-block">Upload any supporting file</span>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label class="col-md-3 col-xs-12 control-label">Code</label>
                             <div class="col-md-6 col-xs-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="fa fa-link"></span></span>
-                                    <input type="url" class="form-control" ng-model="project.codeLink.href"/>
+                                    <input type="url" class="form-control" ng-model="project.codeLink.href" />
                                 </div>
                                 <span class="help-block">Please give a link to the code base, if available, of your project</span>
                             </div>
@@ -98,7 +101,7 @@
                             <div class="col-md-6 col-xs-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="fa fa-link"></span></span>
-                                    <input type="url" class="form-control" ng-model="project.previewLink.href"/>
+                                    <input type="url" class="form-control" ng-model="project.previewLink.href" />
                                 </div>
                                 <span class="help-block">Please give a preview link, if available, of your project</span>
                             </div>
@@ -107,7 +110,13 @@
                     </div>
                     <div class="panel-footer">
                         <button class="btn btn-default">Clear Form</button>
-                        <button class="btn btn-primary pull-right" ng-click="addProject()">Submit</button>
+                        <button ng-class="{disabled: submitting}" class="btn btn-primary pull-right" ng-click="!submitting && submit()">
+                            Submit
+                            <span ng-show="submitting">
+                                <img class="central" src="../../images/Loader.gif" ng-show="loading" />
+                            </span>
+                        </button>
+
                     </div>
                 </div>
             </form>

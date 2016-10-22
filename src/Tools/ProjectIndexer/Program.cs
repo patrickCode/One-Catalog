@@ -1,11 +1,11 @@
-﻿using Microsoft.Azure.Search.Models;
-using Microsoft.Catalog.Azure.Search;
-using Microsoft.Catalog.Azure.Search.Interfaces;
-using Microsoft.Catalog.Common.Configuration;
-using Microsoft.Catalog.Common.Converters;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
+using System.Collections.Generic;
+using Microsoft.Azure.Search.Models;
+using Microsoft.Catalog.Azure.Search;
+using Microsoft.Catalog.Common.Converters;
+using Microsoft.Catalog.Common.Configuration;
+using Microsoft.Catalog.Azure.Search.Interfaces;
 
 namespace ProjectIndexer
 {

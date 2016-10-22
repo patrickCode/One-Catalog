@@ -1,17 +1,18 @@
-﻿<!-- PAGE TITLE -->
-<div class="page-title">
-    <h2><span class="fa fa-info"></span> Registered Projects <small>{{count}} results found</small></h2>
+﻿<div class="page-title">
+    <h2>
+        <span class="fa fa-info"></span>
+        Registered Projects <small ng-hide="loading">{{count}} results found</small> <small ng-show="loading">Searching ...</small>
+    </h2>
 </div>
-<!-- END PAGE TITLE -->
 <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap">
 
+    <!--SEARCH BAR starts-->
     <div class="row">
         <div class="col-md-12">
-
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <p>Use search to find projects. You can search by: name, abstract, description. Or use filters</p>
+                    <p>Use search to find projects. You can search by: name, abstract, description, technology or contact. Or use filters</p>
                     <form class="form-horizontal">
                         <div class="form-group">
                             <div class="col-md-8">
@@ -21,7 +22,7 @@
                                     </div>
                                     <input type="text" class="form-control" placeholder="What are you looking for?" ng-model="searchText" />
                                     <div class="input-group-btn">
-                                        <button class="btn btn-primary" ng-click="search()">Search</button>
+                                        <button class="btn btn-primary" ng-click="search(true)">Search</button>
                                     </div>
                                 </div>
                             </div>
@@ -32,36 +33,67 @@
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
+    <!--SEACH BAR ends-->
 
+    <!--PROJECT TILES starts-->
     <div class="row">
-        <div ng-repeat="project in projects" class="col-md-3" style="min-height">
-            <!-- CONTACT ITEM -->
-            <div class="panel panel-default">
-                <div class="panel-body profile">
-
-                    <div class="profile-data">
-                        <a class="link profile-data-name" ng-click="goToDetails(project)">{{project.name}}</a>
-                        <div class="profile-data-title">
-                            | <span ng-repeat="technology in project.technologies">{{technology.name }} | </span>
+        <img class="central" src="../../images/Loader.gif" ng-show="loading" />
+        <div class="row">
+            <div ng-hide="loading" ng-repeat="project in projects | limitTo: 4: 0" class="col-md-3" style="min-height">
+                <!-- CONTACT ITEM -->
+                <div class="panel panel-default">
+                    <div class="panel-body profile">
+                        <div class="profile-data">
+                            <a class="link profile-data-name" ng-click="goToDetails(project)">{{project.name}}</a>
+                            <div class="profile-data-title">
+                                | <span ng-repeat="technology in project.technologies">{{technology.name }} | </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="contact-info">
+                            <p>
+                                <small>Contacts</small><br />
+                                <span ng-repeat="contact in project.contacts">{{contact.alias }} | </span>
+                            </p>
+                            <p><small>Abstract</small><br />{{project.abstract}}</p>
                         </div>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <div class="contact-info">
-                        <p>
-                            <small>Contacts</small><br />
-                            <span ng-repeat="contact in project.contacts">{{contact.alias }} | </span>
-                        </p>
-                        <p><small>Abstract</small><br />{{project.abstract}}</p>
+                <!-- END CONTACT ITEM -->
+            </div>
+        </div>
+        <div class="row">
+            <div ng-hide="loading" ng-repeat="project in projects | limitTo: 4: 4" class="col-md-3" style="min-height">
+                <!-- CONTACT ITEM -->
+                <div class="panel panel-default">
+                    <div class="panel-body profile">
+                        <div class="profile-data">
+                            <a class="link profile-data-name" ng-click="goToDetails(project)">{{project.name}}</a>
+                            <div class="profile-data-title">
+                                | <span ng-repeat="technology in project.technologies">{{technology.name }} | </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="contact-info">
+                            <p>
+                                <small>Contacts</small><br />
+                                <span ng-repeat="contact in project.contacts">{{contact.alias }} | </span>
+                            </p>
+                            <p><small>Abstract</small><br />{{project.abstract}}</p>
+                        </div>
                     </div>
                 </div>
+                <!-- END CONTACT ITEM -->
             </div>
-            <!-- END CONTACT ITEM -->
         </div>
     </div>
+    <!--PROJECT TILES Ends-->
+
+    <!--PAGINATION Starts-->
     <div class="row">
         <div class="col-md-12">
             <ul class="pagination pagination-sm pull-right push-down-10 push-up-10">
@@ -71,10 +103,12 @@
                 <li ng-repeat="page in pages" ng-class="{'active': (page + 1) === pagination.currentPage}" ng-click="changePage(page + 1)">
                     <a href="javascript:void(0)">{{page + 1}}</a>
                 </li>
-                <li ng-class="{'disabled': (pagination.currentPage === pages.length)}"  ng-click="pagination.currentPage !== pages.length && changePage(pagination.currentPage + 1)">
+                <li ng-class="{'disabled': (pagination.currentPage === pages.length)}" ng-click="pagination.currentPage !== pages.length && changePage(pagination.currentPage + 1)">
                     <a href="javascript:void(0)">»</a>
                 </li>
             </ul>
         </div>
     </div>
+    <!--PAGINATION Ends-->
+
 </div>

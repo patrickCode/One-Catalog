@@ -1,12 +1,14 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Catalog.Domain.ProjectContext.Aggregates;
 using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
 using Microsoft.Catalog.Domain.ProjectContext.ValueObjects;
 
 namespace Microsoft.Catalog.Web.Api
 {
+    //[Authorize]
     [Route("api/projects")]
     public class ProjectsController : Controller
     {
@@ -48,10 +50,12 @@ namespace Microsoft.Catalog.Web.Api
 
         [HttpGet]
         [Route("~/api/users/{userid}/projects")]
-        public ProjectSearchResult GetByContact([FromRoute] string userid, [FromQuery]int skip = 0, [FromQuery]int top = 10)
+        public ProjectSearchResult GetByContact([FromRoute] string userid, [FromQuery]string q, [FromQuery]int skip = 0, [FromQuery]int top = 10)
         {
+            if (string.IsNullOrEmpty(q))
+                q = "*";
             var contactFilters = new List<User>() { new User(userid, string.Empty) };
-            return _searchService.Search("*", new List<Technology>(), contactFilters, skip, top);
+            return _searchService.Search(q, new List<Technology>(), contactFilters, skip, top);
         }
 
         [HttpGet]

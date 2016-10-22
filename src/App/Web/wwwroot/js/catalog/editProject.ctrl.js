@@ -1,9 +1,28 @@
 ﻿(function (module) {
 
-    var addProjectController = function ($scope, $rootScope, $location, adalAuthenticationService, catalogData, technologyData) {
+    var editProjectController = function ($scope, $rootScope, $location, $stateParams, adalAuthenticationService, catalogData, technologyData) {
 
-        var addProject = function () {
+        var getProject = function (projectId) {
+            $scope.loading = true;
+            catalogData.getProjectDetails(projectId)
+                .then(function (data) {
+                    $scope.project = data;
+                    $scope.project.lastModifiedBy = { "alias": adalAuthenticationService.userInfo.userName, "name": "" };
+                    _.each($scope.project.technologies, function (technology) {
+                        $scope.techTags.push({"text": technology.name});
+                    });
+                    _.each($scope.project.contacts, function (contact) {
+                        $scope.contactTags.push({"text": contact.alias});
+                    });
+                    $scope.loading = false;
+                })  
+        }
+        
+        var editProject = function () {
             $scope.submitting = true;
+
+            $scope.project.technologies = [];
+            $scope.project.contacts = [];
 
             $scope.techTags.forEach(function (tag) {
                 var existingTech = _.findWhere($scope.project.technologies, { name: tag.text });
@@ -18,11 +37,10 @@
             });
 
             $scope.errorOcurred = false;
-            catalogData.addNewProject($scope.project)
+            catalogData.editProject($scope.project)
                 .then(function (data) {
                     $scope.submitting = false;
-                    var projectId = data;
-                    $location.path("home/" + projectId + "/details");
+                    $location.path("home/" + $scope.project.id + "/details");
                 }, function (error) {
                     $scope.submitting = false;
                     alert("Some unexpected error ocurred");
@@ -34,12 +52,13 @@
         }
 
         var init = function() {
-            $scope.submit = addProject;
+            $scope.submit = editProject;
+            $scope.editMode = true;
 
             $scope.techTags = [];
-            $scope.contactTags = [{ "text": adalAuthenticationService.userInfo.userName }];
-
+            $scope.contactTags = [];
             $scope.submitting = false;
+
             $scope.project = {
                 "id": 0,
                 "name": "",
@@ -47,8 +66,8 @@
                 "abstract": "",
                 "additionalDetails": "",
                 "technologies": [],
-                "createdBy": { "alias": adalAuthenticationService.userInfo.userName, "name": "" },
-                "contacts": [{ "alias": adalAuthenticationService.userInfo.userName, "name": "" }],
+                "createdBy": {  },
+                "contacts": [],
                 "codeLink": { "linkType": "Code", "href": null, "desciption": null },
                 "previewLink": { "linkType": "Preview", "href": null, "desciption": null },
                 "additionalLinks": [],
@@ -57,10 +76,13 @@
                 "lastModifiedBy": { "alias": adalAuthenticationService.userInfo.userName, "name": "" },
                 "isDeleted": false
             }
+            var projectId = $stateParams.id;
+            if (projectId !== undefined && projectId !== null && projectId > 0)
+                getProject(projectId);
         }
         init();
     }
 
-    module.controller("addProjectController", ["$scope", "$rootScope", "$location", "adalAuthenticationService", "catalogData", "technologyData", addProjectController]);
+    module.controller("editProjectController", ["$scope", "$rootScope", "$location", "$stateParams", "adalAuthenticationService", "catalogData", "technologyData", editProjectController]);
 
 }(angular.module("catalog")))

@@ -1,12 +1,11 @@
-﻿using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using Microsoft.Catalog.Domain.ProjectContext.Aggregates;
-using Microsoft.Catalog.Common.Interfaces.Repository;
+using System.Collections.Generic;
 using Model = Microsoft.Catalog.Database.Models;
+using Microsoft.Catalog.Common.Interfaces.Repository;
+using Microsoft.Catalog.Domain.ProjectContext.Interfaces;
+using Microsoft.Catalog.Domain.ProjectContext.Aggregates;
 using Microsoft.Catalog.Domain.ProjectContext.ValueObjects;
-using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
 {
@@ -15,15 +14,27 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
         private readonly IReadOnlyRepository<Model.Project> _projectRepository;
         private readonly IReadOnlyRepository<Model.ProjectTechnologies> _projTechRepository;
         private readonly IReadOnlyRepository<Model.Technology> _techRepository;
-        public ProjectQueryService(IReadOnlyRepository<Model.Project> projectRepository, IReadOnlyRepository<Model.ProjectTechnologies> projTechRepository, IReadOnlyRepository<Model.Technology> techRepository)
+        private readonly IReadOnlyRepository<Model.Link> _linkRepository;
+        private readonly IReadOnlyRepository<Model.ProjectContact> _contactRepository;
+
+        public ProjectQueryService(
+            IReadOnlyRepository<Model.Project> projectRepository,
+            IReadOnlyRepository<Model.ProjectTechnologies> projTechRepository,
+            IReadOnlyRepository<Model.Technology> techRepository,
+            IReadOnlyRepository<Model.Link> linkRepository,
+            IReadOnlyRepository<Model.ProjectContact> contactRepository)
         {
             _projectRepository = projectRepository;
             _projTechRepository = projTechRepository;
             _techRepository = techRepository;
+            _linkRepository = linkRepository;
+            _contactRepository = contactRepository;
         }
+
         public Project Get(int id)
         {
             var project = _projectRepository.Get(id);
+            var links = GetLinks(project);
             return new Project()
             {
                 Id = project.Id,
@@ -31,11 +42,11 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
                 Description = project.Description,
                 Abstract = project.Abstract,
                 AdditionalDetails = project.AdditionalDetail,
-                PreviewLink = string.IsNullOrEmpty(project.PreviewLink)? null : new PreviewLink(new Uri(project.PreviewLink)),
+                PreviewLink = links.Any(link => link.LinkType.Equals("Preview")) ? new PreviewLink(links.First(link => link.LinkType.Equals("Preview"))) : null,
                 Contacts = GetContacts(project).ToList(),
-                CodeLink = string.IsNullOrEmpty(project.CodeLink) ? null: new CodeLink(new Uri(project.CodeLink)),
+                CodeLink = links.Any(link => link.LinkType.Equals("Code")) ? new CodeLink(links.First(link => link.LinkType.Equals("Code"))) : null,
                 Technologies = GetTechnologies(project).ToList(),
-                AdditionalLinks = GetLinks(project).ToList(),
+                AdditionalLinks = links.ToList(),
                 CreatedBy = new User(project.CreatedBy, string.Empty),
                 CreatedOn = project.CreatedOn
             };
@@ -43,18 +54,16 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
 
         private IEnumerable<User> GetContacts(Model.Project project)
         {
-            if (string.IsNullOrEmpty(project.Contacts))
+            var contacts = _contactRepository.Get(contact => contact.ProjectId == project.Id && !contact.IsDeleted);
+            if (contacts == null || !contacts.Any())
                 yield break;
-            var aliasList = JArray.Parse(project.Contacts);
-            foreach(var alias in aliasList)
-            {
-                yield return new User(alias.ToString(), string.Empty);
-            }
+            foreach (var contact in contacts)
+                yield return new User(contact.Alias, string.Empty);
         }
 
         private IEnumerable<Technology> GetTechnologies(Model.Project project)
         {
-            var projTechMap = _projTechRepository.Get(filter: (e) => e.ProjectId == project.Id);
+            var projTechMap = _projTechRepository.Get(filter: e => e.ProjectId == project.Id && !e.IsDeleted);
             if (projTechMap == null || !projTechMap.Any())
                 yield break;
             foreach (var map in projTechMap)
@@ -66,11 +75,10 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
         }
         private IEnumerable<Link> GetLinks(Model.Project project)
         {
-            if (string.IsNullOrEmpty(project.AdditionalLinks))
-                yield break;
-            foreach (var link in project.AdditionalLinks.Split(','))
+            var links = _linkRepository.Get(link => link.ProjectId == project.Id);
+            foreach (var link in links)
             {
-                yield return new Link("Additional Link", new Uri(link));
+                yield return new Link(link.Id, link.Type, new Uri(link.Href), link.Description);
             }
         }
     }

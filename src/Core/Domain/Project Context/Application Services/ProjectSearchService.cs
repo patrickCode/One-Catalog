@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Microsoft.Catalog.Azure.Search.Models;
@@ -48,6 +49,10 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
                     IncludeCount = true,
                     Skip = skip,
                     Top = top
+                },
+                Scoring = new ScoringInfo()
+                {
+                    ProfileName = "default"
                 }
             };
             var response = _searchContext.Search("index-project", searchParameter);
@@ -66,10 +71,17 @@ namespace Microsoft.Catalog.Domain.ProjectContext.ApplicationServices
             {
                 yield return new Project()
                 {
-                    Id = int.Parse(Get<string>(result, "Id")),
+                    Id = int.Parse(Get<string>(result, "ProjectId")),
                     Name = Get<string>(result, "Name"),
                     Abstract = Get<string>(result, "Abstract"),
                     Description = Get<string>(result, "Description"),
+                    AdditionalDetails = Get<string>(result, "AdditionalDetail"),
+                    CodeLink = string.IsNullOrEmpty(Get<string>(result, "CodeLink")) 
+                                ? null 
+                                : new CodeLink(new Uri(Get<string>(result, "CodeLink"))),
+                    PreviewLink = string.IsNullOrEmpty(Get<string>(result, "PreviewLink"))
+                                ? null
+                                : new PreviewLink(new Uri(Get<string>(result, "PreviewLink"))),
                     Technologies = GetTechnologies(result).ToList(),
                     Contacts = GetContacts(result).ToList(),
                     CreatedBy = new User(Get<string>(result, "CreatedBy"), string.Empty)

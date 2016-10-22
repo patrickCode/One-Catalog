@@ -2,9 +2,11 @@
 
     var catalogController = function ($scope, $rootScope, $location, catalogData) {
 
-        var search = function (facet) {
+        var search = function (reset, facet) {
             $scope.errorOcurred = false;
             $scope.loading = true;
+            if (reset !== undefined || reset !== null || reset === true)
+                $scope.pagination.currentPage = 1;
             catalogData.getProjects($scope.searchText, $scope.selectedFacets.technologies, $scope.pagination.currentPage, $scope.pagination.pageSize)
                 .then(function (data) {
                     $scope.projects = data.results;
@@ -56,7 +58,7 @@
                 }
 
             })
-            search(filterResponse.selectedFacet);
+            search(true, filterResponse.selectedFacet);
         }
 
         var init = function () {
@@ -87,7 +89,7 @@
 
             $rootScope.$on("filter.applied", filtersApplied);
 
-            search();
+            search(true);
         }
         init();
     }

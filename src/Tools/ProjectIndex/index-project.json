@@ -14,6 +14,17 @@
       "analyzer": null
     },
     {
+      "name": "ProjectId",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": false,
+      "sortable": true,
+      "facetable": false,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
+    },
+    {
       "name": "Name",
       "type": "Edm.String",
       "searchable": true,
@@ -40,7 +51,18 @@
       "type": "Edm.String",
       "searchable": true,
       "filterable": false,
-      "sortable": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
+    },
+    {
+      "name": "AdditionalDetail",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "sortable": false,
       "facetable": false,
       "key": false,
       "retrievable": true,
@@ -67,6 +89,39 @@
       "key": false,
       "retrievable": true,
       "analyzer": null
+    },
+    {
+      "name": "CreatedBy",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": true,
+      "sortable": true,
+      "facetable": true,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
+    },
+    {
+      "name": "CodeLink",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "sortable": true,
+      "facetable": false,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
+    },
+    {
+      "name": "PreviewLink",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "sortable": true,
+      "facetable": false,
+      "key": false,
+      "retrievable": true,
+      "analyzer": null
     }
   ],
   "suggesters": [
@@ -75,5 +130,24 @@
       "searchMode": "analyzingInfixMatching",
       "sourceFields": [ "Name", "Abstract" ]
     }
+  ],
+  "scoringProfiles": [
+    {
+      "name": "default",
+      "text": {
+        "weights": {
+          "Name": 5,
+          "Abstract": 4,
+          "Description": 3.5,
+          "Technologies": 3.5,
+          "AdditionalDetail": 2.5,
+          "CreatedBy": 2,
+          "Contacts": 2,
+          "CodeLink": 1,
+          "PreviewLink": 1
+        } 
+      }
+    }
   ]
+
 }

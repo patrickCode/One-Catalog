@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Domain.TechnologyContext.Aggregates;
 using Microsoft.Catalog.Domain.TechnologyContext.Interfaces;
@@ -15,9 +16,18 @@ namespace Microsoft.Catalog.Web.Api
         }
 
         [HttpGet]
-        public IEnumerable<Technology> Get()
+        public IEnumerable<Technology> Get(string[] name)
         {
-            return _technologyReadService.Get();
+            if (name == null || !name.Any())
+                return _technologyReadService.Get();
+            return _technologyReadService.Get(name);
+        }
+
+        [HttpGet]
+        [Route("suggest")]
+        public IEnumerable<Technology> Suggest(string name)
+        {
+            return _technologyReadService.Suggest(name);
         }
     }
 }

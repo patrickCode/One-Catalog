@@ -20,6 +20,26 @@ namespace Microsoft.Catalog.Domain.TechnologyContext.ApplicationServices
             return entities.Select(entity => ToDomain(entity));
         }
 
+        public Technology Get(string name)
+        {
+            var entity = _techRepository.Get(tech => tech.Name.Equals(name)).FirstOrDefault();
+            if (entity != null)
+                return ToDomain(entity);
+            return null;
+        }
+
+        public IEnumerable<Technology> Get(string[] names)
+        {
+            var entities = _techRepository.Get(tech => names.Any(n => n.Equals(tech.Name)));
+            return entities.Select(entity => ToDomain(entity));
+        }
+
+        public IEnumerable<Technology> Suggest(string name)
+        {
+            var entities = _techRepository.Get(tech => tech.Name.StartsWith(name));
+            return entities.Select(entity => ToDomain(entity));
+        }
+
         private Technology ToDomain(Model.Technology entity)
         {
             return new Technology()

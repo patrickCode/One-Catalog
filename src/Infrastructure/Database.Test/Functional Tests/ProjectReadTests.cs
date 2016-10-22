@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Catalog.Database.Models;
-using Microsoft.Catalog.Database.Repositories;
+using Microsoft.Catalog.Database.Repositories.Read;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Catalog.Common.Interfaces.Repository;
 
@@ -63,14 +63,14 @@ namespace Microsoft.Catalog.Database.Test.Functional_Tests
             const string filterText = "pratikb@microsoft.com";
 
             //Act
-            var projects = _projectRepository.Get((p => p.Contacts.Equals(filterText)));
+            var projects = _projectRepository.Get((p => p.CreatedBy.Equals(filterText)));
 
             //Assert
             Assert.IsNotNull(projects);
             Assert.IsTrue(projects.Any());
             foreach (var project in projects)
             {
-                Assert.IsTrue(project.Contacts.Equals(filterText));
+                Assert.IsTrue(project.CreatedBy.Equals(filterText));
             }
 
             //Analyze

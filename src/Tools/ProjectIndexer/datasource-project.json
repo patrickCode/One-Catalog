@@ -5,7 +5,7 @@
   "credentials": {
     "connectionString": "Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=dbmsonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312"
   },
-  "container": { "name": "Project" },
+  "container": { "name": "ProjectSummary" },
   "dataChangeDetectionPolicy": {
     "@odata.type": "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy"
   }

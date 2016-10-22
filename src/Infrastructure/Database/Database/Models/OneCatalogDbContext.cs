@@ -41,6 +41,31 @@ namespace Microsoft.Catalog.Database.Models
             modelBuilder.Entity<Project>(entity =>
             {
                 entity.Property(e => e.Abstract).HasMaxLength(300);
+                
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).IsRequired();
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("0");
+
+                entity.Property(e => e.LastModifiedBy)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.LastModifiedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<ProjectSummary>(entity =>
+            {
+                entity.Property(e => e.Abstract).HasMaxLength(300);
 
                 entity.Property(e => e.CodeLink).HasMaxLength(300);
 
@@ -100,11 +125,52 @@ namespace Microsoft.Catalog.Database.Models
                     .IsRequired()
                     .HasMaxLength(300);
             });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.Alias)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("0");
+
+                entity.Property(e => e.LastModifiedBy)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.LastModifiedOn).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<ProjectContact>(entity =>
+            {
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("0");
+
+                entity.Property(e => e.LastModifiedBy)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.LastModifiedOn).HasColumnType("datetime");
+            });
         }
 
         public virtual DbSet<Link> Link { get; set; }
         public virtual DbSet<Project> Project { get; set; }
+        public virtual DbSet<ProjectSummary> ProjectSummary { get; set; }
         public virtual DbSet<ProjectTechnologies> ProjectTechnologies { get; set; }
         public virtual DbSet<Technology> Technology { get; set; }
+        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<ProjectContact> ProjectContacts { get; set; }
     }
 }

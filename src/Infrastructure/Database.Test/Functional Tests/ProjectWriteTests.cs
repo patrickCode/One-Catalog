@@ -1,11 +1,12 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Catalog.Database.Repositories;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Catalog.Common.Interfaces.Repository;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Catalog.Database.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Catalog.Database.Repositories.Read;
+using Microsoft.Catalog.Database.Repositories.Write;
+using Microsoft.Catalog.Common.Interfaces.Repository;
 
 namespace Microsoft.Catalog.Database.Test.Functional_Tests
 {
@@ -35,12 +36,7 @@ namespace Microsoft.Catalog.Database.Test.Functional_Tests
                 Name = "DB_INTERGRATION_TEST" + "_"+Guid.NewGuid().ToString(),
                 Description = "Integration test description",
                 Abstract = "Intgr test abstract",
-                AdditionalDetail = "Integration test additional details",
-                AdditionalLinks = "http://aka.ms",
-                Contacts = "pratikb@microsoft.com",
-                CodeLink = "http://github/patrickCode",
-                Technologies = "ASP.NET Core 1.0, .NET Core Cli",
-                PreviewLink = "http://msonecatalogdev.azurewebsites.net/"
+                AdditionalDetail = "Integration test additional details"
             };
 
             //Act

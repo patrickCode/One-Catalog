@@ -27,7 +27,7 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
                 RetryInterval = TimeSpan.FromSeconds(1)
             };
             var converter = new JsonConverter<SearchResponse>();
-            _searchContext = new AzureSearchContext(config, converter);
+            _searchContext = new AzureSearchContext(config, converter, null);
         }
 
         [TestMethod]

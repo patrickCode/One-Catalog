@@ -66,27 +66,46 @@ namespace Web
                 RetryInterval = TimeSpan.FromSeconds(1)
             };
 
-            services.AddDbContext<OneCatalogDbContext>(options => 
+            services.AddDbContext<OneCatalogDbContext>(options =>
                 options.UseSqlServer(@"Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=dbmsonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312"));
 
 
             services.AddSingleton(config);
+
+            #region Common Services
             services.AddSingleton<IConverter<SearchResponse>, JsonConverter<SearchResponse>>();
             services.AddSingleton<IConverter<SuggestionResponse>, JsonConverter<SuggestionResponse>>();
-            services.AddScoped<IAzureSearchContext, AzureSearchContext>();
-            services.AddScoped<IProjectSearchService, ProjectSearchService>();
+            #endregion
 
+            services.AddScoped<IAzureSearchContext, AzureSearchContext>();
+            
+
+            #region Readonly Repositories
             services.AddScoped<IReadOnlyRepository<Project>, ProjectReadOnlyRepository>();
+            services.AddScoped<IReadOnlyRepository<ProjectSummary>, ProjectSummaryReadOnlyRepository>();
+            services.AddScoped<IReadOnlyRepository<ProjectContact>, ProjectContactsReadOnlyRepostiory>();
             services.AddScoped<IReadOnlyRepository<ProjectTechnologies>, ProjectTechnologiesReadOnlyRepository>();
             services.AddScoped<IReadOnlyRepository<Technology>, TechnologyReadOnlyRepository>();
-            services.AddScoped<IProjectQueryService, ProjectQueryService>();
+            services.AddScoped<IReadOnlyRepository<Link>, LinkReadOnlyRepository>();
+            #endregion
 
+            #region Write Repositories
             services.AddScoped<IRepository<Project>, ProjectRepository>();
             services.AddScoped<IRepository<ProjectTechnologies>, ProjectTechnologiesRepository>();
-            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<IRepository<ProjectSummary>, ProjectSummaryRepository>();
+            services.AddScoped<IRepository<ProjectContact>, ProjectContactsRepository>();
+            services.AddScoped<IRepository<Link>, LinkRepository>();
+            #endregion
 
-            services.AddScoped<IReadOnlyRepository<Technology>, TechnologyReadOnlyRepository>();
+            #region Application Services
+            #region Project Services
+            services.AddScoped<IProjectSearchService, ProjectSearchService>();
+            services.AddScoped<IProjectQueryService, ProjectQueryService>();
+            services.AddScoped<IProjectService, ProjectService>();
+            #endregion
+
             services.AddScoped<ITechnologyReadService, TechnologyReadService>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,7 +125,14 @@ namespace Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                Authority = string.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAd:Tenant"]),
+                Audience = Configuration["AzureAd:Audience"],
+            });
+            
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();

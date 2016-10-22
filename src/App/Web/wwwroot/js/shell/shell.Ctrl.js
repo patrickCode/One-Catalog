@@ -1,6 +1,6 @@
 ﻿(function (module) {
 
-    var shellController = function ($scope, $rootScope, $state, $stateParams, adalAuthenticationService) {
+    var shellController = function ($scope, $rootScope, $state, $stateParams, adalAuthenticationService, userService) {
 
         var goTo = function (page) {
 
@@ -34,6 +34,10 @@
             }
         }
 
+        var getUsers = function () {
+            userService.getUserDetail();
+        }
+
         var init = function () {
             $rootScope.breadcrumbs = [{
                 title: "",
@@ -51,15 +55,16 @@
 
             $scope.state = $state;
 
-            //test
+            
             $scope.facets = [];
             $scope.facetmodel = [[]];
             //Hack since only 1 Facet is present
             $scope.originalResponse = null;
+            $scope.getUsers = getUsers;
         }
         init();
     }
 
-    module.controller("shellController", ['$scope', '$rootScope', '$state', '$stateParams', 'adalAuthenticationService', shellController])
+    module.controller("shellController", ['$scope', '$rootScope', '$state', '$stateParams', 'adalAuthenticationService', 'userService', shellController])
 
 }(angular.module("shell")))

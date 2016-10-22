@@ -8,9 +8,10 @@ using Microsoft.Catalog.Database.Models;
 namespace Database.Migrations
 {
     [DbContext(typeof(OneCatalogDbContext))]
-    partial class OneCatalogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161014102238_dev-101416")]
+    partial class dev101416
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")

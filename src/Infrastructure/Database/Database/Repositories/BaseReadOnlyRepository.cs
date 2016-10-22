@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Catalog.Database.Models;
 using Microsoft.Catalog.Common.Interfaces.Repository;
 
 namespace Microsoft.Catalog.Database.Repositories
 {
-    public class BaseReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity>, IReadOnlyRepositoryAsync<TEntity> where TEntity: class
+    public class BaseReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity>, IReadOnlyRepositoryAsync<TEntity> where TEntity: BaseModel
     {
         protected DbContext _dbContext;
         public BaseReadOnlyRepository(DbContext dbContext)
@@ -68,12 +69,12 @@ namespace Microsoft.Catalog.Database.Repositories
 
         public virtual TEntity Get(object id)
         {
-            return _dbContext.Set<TEntity>().FirstOrDefault(obj => GetProperty(obj, "Id").ToString() == id.ToString());
+            return _dbContext.Set<TEntity>().FirstOrDefault(obj => obj.Id == (int)id);
         }
 
         public virtual Task<TEntity> GetAsync(object id)
         {
-            return _dbContext.Set<TEntity>().FirstOrDefaultAsync(obj => GetProperty(obj, "Id").ToString() == id.ToString());
+            return _dbContext.Set<TEntity>().FirstOrDefaultAsync(obj => obj.Id == (int)id);
         }
 
         public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter = null,

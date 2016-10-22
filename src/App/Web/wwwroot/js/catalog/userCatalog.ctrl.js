@@ -2,14 +2,17 @@
 
     var userCatalogController = function ($scope, $rootScope, $location, catalogData, adalAuthenticationService) {
 
-        var getUserProjects = function () {
+        var getUserProjects = function (reset) {
             $scope.loading = true;
             $scope.errorOcurred = false;
-            catalogData.getProjectsByUser($scope.userId, $scope.pagination.page, $scope.pagination.pageSize)
+            if (reset !== undefined || reset !== null || reset === true)
+                $scope.pagination.currentPage = 1;
+            catalogData.getProjectsByUser($scope.userId, $scope.searchText, $scope.pagination.currentPage, $scope.pagination.pageSize)
                 .then(function (data) {
                     $scope.projects = data.results;
                     $scope.count = data.totalCount;
                     $scope.loading = false;
+                    repaginate();
                 }, function (error) {
                     alert("Some unexpected error ocurred");
                 });
@@ -20,8 +23,27 @@
             //});
         }
 
+        var repaginate = function () {
+            var totalPages = parseInt(parseInt($scope.count / $scope.pagination.pageSize) + ($scope.count % $scope.pagination.pageSize !== 0 ? 1 : 0));
+            $scope.pages = Array.apply(null, { length: totalPages }).map(Number.call, Number);
+
+            if ($scope.pagination.currentPage > totalPages)
+                $scope.pagination.currentPage = 1;
+        }
+
         var goToDetails = function (project) {
             $location.path("home/" + project.id + "/details");
+        }
+
+        var editProject = function (project) {
+            $location.path("home/" + project.id + "/edit");
+        }
+
+        var changePage = function (currentPage) {
+            if (currentPage > 0 || currentPage <= $scope.pages.length) {
+                $scope.pagination.currentPage = currentPage;
+                getUserProjects();
+            }
         }
 
         var init = function () {
@@ -31,15 +53,18 @@
                 title: "User Catalog",
                 href: "/catalog"
             });
-
+            $scope.searchText = "";
             $scope.userId = adalAuthenticationService.userInfo.userName;
 
             $scope.pagination = {
-                page: 1,
+                currentPage: 1,
                 pageSize: 10
             };
-            getUserProjects();
+            getUserProjects(true);
+            $scope.search = getUserProjects;
+            $scope.changePage = changePage;
             $scope.goToDetails = goToDetails;
+            $scope.editProject = editProject;
         }
         init();
     }
