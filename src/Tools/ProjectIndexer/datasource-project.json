@@ -1,11 +1,11 @@
 ﻿{
-  "name": "datasource-project-sql",
-  "description": "Azure SQL Datasource for Projects",
+  "name": "ds-phx",
+  "description": "Azure SQL Datasource for Phoenix",
   "type": "azuresql",
   "credentials": {
-    "connectionString": "Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=dbmsonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312"
+    "connectionString": "Data Source=tcp:gh5y65pnnh.database.windows.net,1433;Initial Catalog=PhoenixPublish;user id=PhoenixAdmin2013@gh5y65pnnh;password=Pho3n1x@dmin17"
   },
-  "container": { "name": "ProjectSummary" },
+  "container": { "name": "" },
   "dataChangeDetectionPolicy": {
     "@odata.type": "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy"
   }

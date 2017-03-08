@@ -18,8 +18,8 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
         public IndexerRepositoryTests()
         {
             //Arrange
-            const string AzureSearchServiceName = "srch-onecatalog";
-            const string AzureSearchSecretKey = "3304CCABCBCDBDE38790BBB4049A2300";
+            const string AzureSearchServiceName = "phxsearch2-basic-dev";
+            const string AzureSearchSecretKey = "0531BEDE05D5E35F30CAC3751F300A25";
             var config = new AzureSearchConfiguration()
             {
                 ServiceName = AzureSearchServiceName,
@@ -34,6 +34,20 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
             _indexerRepository = new IndexerRepository(config, indexerConverter, indexeresConverter);
             _dataSourceRepository = new DataSourceRepository(config, null, null);
             _indexRepository = new IndexRepository(config, null, null);
+        }
+
+        [TestMethod]
+        public void Phoenix_Search_Indexer_Create()
+        {
+            //Arrange
+            const string IndexerName = "ixr-servicetype";
+            var indexerPayload = GetPhoenixIndexer();
+
+            //Act
+            _indexerRepository.Create(IndexerName, indexerPayload);
+
+            //Assert
+            Assert.IsTrue(_indexerRepository.Exists(IndexerName));
         }
 
         [TestMethod]
@@ -92,7 +106,20 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
                         'name' : 'testindexername',  
                         'description' : 'Test Indexer',
                         'dataSourceName' : 'testdatasource',
-                        'targetIndexName' : 'test-index-name',
+                        'targetIndexName' : 'servicetype-index',
+                        'schedule' : { 'interval' : 'PT1H', 'startTime' : '2015-02-01T00:00:00Z' },  
+                        'parameters' : { 'maxFailedItems' : 10, 'maxFailedItemsPerBatch' : 5, 'base64EncodeKeys': false }
+                    }";
+        }
+
+        private string GetPhoenixIndexer()
+        {
+            return @"
+                    {
+                        'name' : 'ixr-servicetype',  
+                        'description' : 'Testing Change Tracking',
+                        'dataSourceName' : 'ds-servicetype',
+                        'targetIndexName' : 'servicetype-index',
                         'schedule' : { 'interval' : 'PT1H', 'startTime' : '2015-02-01T00:00:00Z' },  
                         'parameters' : { 'maxFailedItems' : 10, 'maxFailedItemsPerBatch' : 5, 'base64EncodeKeys': false }
                     }";

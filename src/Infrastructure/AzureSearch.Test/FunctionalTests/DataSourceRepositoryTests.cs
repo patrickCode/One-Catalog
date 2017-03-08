@@ -17,8 +17,8 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
         public DataSourceRepositoryTests()
         {
             //Arrange
-            const string AzureSearchServiceName = "srch-onecatalog";
-            const string AzureSearchSecretKey = "3304CCABCBCDBDE38790BBB4049A2300";
+            const string AzureSearchServiceName = "phxsearch2-basic-dev";
+            const string AzureSearchSecretKey = "0531BEDE05D5E35F30CAC3751F300A25";
             var config = new AzureSearchConfiguration()
             {
                 ServiceName = AzureSearchServiceName,
@@ -31,6 +31,20 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
             var dataSourceConverter = new JsonConverter<DataSource>();
             var dataSourcesConverter = new JsonConverter<List<DataSource>>();
             _dataSourceRepository = new DataSourceRepository(config, dataSourceConverter, dataSourcesConverter);
+        }
+
+        [TestMethod]
+        public void CreatePhoenixDataSource()
+        {
+            //Arrange
+            const string DataSourceName = "ds-servicetype";
+            var dataSourcePayload = GetPhxDataSource();
+
+            //Act
+            _dataSourceRepository.Create(DataSourceName, dataSourcePayload, false);
+
+            //Assert
+            Assert.IsTrue(_dataSourceRepository.Exists(DataSourceName));
         }
 
         [TestMethod]
@@ -118,6 +132,19 @@ namespace Microsoft.Catalog.Azure.Search.Test.FunctionalTests
                         'type' : 'azuresql',
                         'credentials' : { 'connectionString' : 'Server=tcp:sql-msonecatalogdev.database.windows.net,1433;Database=dbmsonecatalogdev;Trusted_Connection=False;User ID=catalogdevadmin;Password=CltgServerdev#312' },  
                         'container' : { 'name' : 'Project' },  
+                        'dataChangeDetectionPolicy' : { '@odata.type' : '#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy' }
+                    }";
+        }
+
+        private string GetPhxDataSource()
+        {
+            return @"
+                    {   
+                        'name' : 'ds-servicetype',  
+                        'description' : 'Testing Change Tracking',
+                        'type' : 'azuresql',
+                        'credentials' : { 'connectionString' : 'Data Source=tcp:gh5y65pnnh.database.windows.net,1433;Initial Catalog=PhoenixPublish;user id=PhoenixAdmin2013@gh5y65pnnh;password=Pho3n1x@dmin17' },  
+                        'container' : { 'name' : 'API.ServiceType' },  
                         'dataChangeDetectionPolicy' : { '@odata.type' : '#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy' }
                     }";
         }

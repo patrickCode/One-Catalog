@@ -13,8 +13,8 @@ namespace ProjectIndexer
     {
         private static IDataSourceRepository _dataSourceRespository;
         private static IIndexerRepository _indexerRepository;
-        const string AzureSearchServiceName = "srch-onecatalog";
-        const string AzureSearchSecretKey = "3304CCABCBCDBDE38790BBB4049A2300";
+        const string AzureSearchServiceName = "phxadminsearch-basic-dev";
+        const string AzureSearchSecretKey = "C08FA27347853AD9C0E580908D2737DE";
         public static void Main(string[] args)
         {
             var config = new AzureSearchConfiguration()
